@@ -1,0 +1,37 @@
+# Site settings
+title: Code for America Style Guide
+email: info@codeforamerica.org
+description: |
+  Code for America's style guide.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "" # the base hostname & protocol for your site
+permalink: /:categories/:title/
+
+# Build settings
+markdown: kramdown
+
+defaults:
+  - scope:
+      path: ''
+    values:
+      layout: home
+
+collections:
+  components:
+    output: true
+    permalink: /components/:path/
+  atoms:
+    output: true
+    permalink: /atoms/:path/
+  molecules:
+    output: true
+    permalink: /molecules/:path/
+  organisms:
+    output: true
+    permalink: /organisms/:path/
+  templates:
+    output: true
+    permalink: /templates/:path/
+  developers:
+    output: true
+    permalink: /developers/:path/

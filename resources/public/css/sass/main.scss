@@ -1,0 +1,164 @@
+@import "style-guide-4.0.4/_sass/main";
+
+$section-padding: 1em;
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.side-nav {
+  max-width: 15vw;
+
+  .side-nav-list {
+    paddding-left: 0;
+  }
+
+  ul {
+    margin: 0;
+    position: absolute;
+    top: 2vh;
+    left: 0;
+    list-style: none;
+  }
+
+  li {
+    font-size: 1.2em;
+    margin: 0;
+  }
+
+  .nav-item {
+    background: #fff;
+    padding: 0.25rem 0.5rem 0.5rem 1.5rem;
+  }
+}
+
+.header {
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("../media/grocery.jpg");
+  color: #000;
+  height: 100vh;
+  width: 100vw;
+
+  align-items: center;
+  display: flex;
+  justify-content: start;
+
+  .header-content {
+    z-index: 100;
+    width: 980px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-left: 4vw;
+    padding-right: 4vw;
+
+    color: #fff;
+
+    h1 {
+      font-size: 5rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.article-container, .cta {
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 0vh 4vw 2vh 4vw;
+
+  font-size: 1.2rem;
+
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.article-container {
+  .article-section, {
+    padding-top: 4em;
+  }
+  .notes, .visualization {
+    padding-top: 2em;
+  }
+
+  .explanation {
+    width: 100%;
+    padding-bottom: $section-padding;
+  }
+
+  .profile-image {
+    background-color: #ccc;
+    height: 350px;
+    width: 100%;
+  }
+
+  .profile {
+    padding-bottom: $section-padding;
+  }
+
+  .profile-quote {
+    font-style: italic;
+    font-size: 1.5em;
+  }
+
+  .visualization {
+    padding-bottom: 1em;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .visualization-placeholder{
+    background-color: #ccc;
+    height: 350px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+#cta {
+  padding-bottom: 3em;
+}
+
+@media only screen and (max-width: 1000px) {
+  .side-nav {
+    display: none;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    line-height: 1em;
+  }
+}
+
+#quote_map_container {
+  background-color: #FEFEFE;
+  margin: 0;
+  padding: 0;
+
+  #quote_map {
+    position: absolute;
+    top: 0px;
+    left: 50vw;
+    height: 100vh;
+    width: 50vw;
+  }
+
+  #quote_map_content {
+    height: 100vh;
+    width: 44vw;
+    padding-top: 4em;
+    margin-left: 4em;
+  }
+
+  // TODO: Mobile view
+}
