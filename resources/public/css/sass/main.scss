@@ -162,3 +162,61 @@ body {
 
   // TODO: Mobile view
 }
+
+// Cost of Living Viz
+.notes {
+  font-color: grey;
+  font-size: 0.85rem;
+
+  font-style: italics;
+}
+
+#viz1, #col_viz {
+  rect.housing {
+    fill: #c7e9b4;
+  }
+
+  rect.medical {
+    fill: #7fcdbb;
+  }
+
+  rect.transportation {
+    fill: #41b6c4;
+  }
+
+  rect.child-care {
+    //"#1d91c0","#225ea8","#253494","#081d58"
+    fill: #1d91c0;
+  }
+
+  rect.food {
+    //fill: 0x8b0000
+    fill: #e31a1c;
+    fill-opacity: 0.3;
+    outline-color: #e31a1c;
+    outline-width: 2.5px;
+    outline-style: dashed;
+    outline-offset: -2.5px;
+  }
+
+  .limit-line {
+    stroke: #444;
+    stroke-dasharray: 2;
+  }
+}
+
+.annotation-note-label {
+  font-size: 0.85em;
+}
+
+.label {
+  font-size: 0.9rem;
+  text-align: right;
+  vertical-align: middle;
+  line-height: 0.9;
+}
+
+.legend {
+  font-size: 0.9rem;
+  text-anchor: end;
+}

@@ -1,17 +1,10 @@
 (ns calfresh-minisite.core
-    (:require ))
-
-(enable-console-print!)
-
-(println "This text is printed from src/calfresh-minisite/core.cljs. Go ahead and edit it and see reloading in action.")
+    (:require [calfresh-minisite.col-chart :as col-chart]))
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
-
+(defn ^:export main []
+  (col-chart/redraw))
 
 (defn on-js-reload []
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
-)
+  (main))
