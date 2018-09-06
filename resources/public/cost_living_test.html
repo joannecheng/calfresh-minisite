@@ -6,23 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Minisite title</title>
 
+    <!--
     <script src="https://use.typekit.net/lkd6vsz.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"> -->
+
+    <link href="css/main.css" rel="stylesheet" type="text/css">
   </head>
+
   <body id="cost_of_living">
-
     <h1>
-      Cost of Living (All California)
+      Cost of Living vs Income
     </h1>
+    <div id="col_vs_income">
 
-    <div id="viz1">
-    </div>
-    <div class="notes">
-      *
-      <a href="https://smartasset.com/taxes/california-paycheck-calculator">
-        https://smartasset.com/taxes/california-paycheck-calculator
-      </a>
     </div>
 
 
@@ -39,5 +36,12 @@
 
     <div id="viz2">
     </div>
+
+    <!-- ClojureScript compiled files -->
+    <script src="js/compiled/calfresh_minisite.js" type="text/javascript">
+    </script>
+    <script>
+     calfresh_minisite.core.main()
+    </script>
   </body>
 </html>

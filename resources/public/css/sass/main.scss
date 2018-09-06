@@ -163,12 +163,49 @@ body {
   // TODO: Mobile view
 }
 
-// Cost of Living Viz
+// Cost of Living vs Income Viz
+#cost_of_living {
+  margin-left: 3em;
+  padding-top: 3em;
+  max-width: 980px;
+
+  text.label {
+    font-size: 0.85em;
+    text-anchor: end;
+    alignment-baseline: middle;
+  }
+
+  rect.even {
+    fill: none;
+  }
+  rect.odd {
+    fill: #eee;
+  }
+}
+
 .notes {
   font-color: grey;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 
   font-style: italics;
+}
+
+line.col-line {
+  stroke: #555;
+  stroke-width: 2px;
+}
+
+line.below {
+  stroke: #d62728;
+  stroke-width: 4px;
+}
+
+circle.col-marker {
+  fill: darkred;
+}
+
+circle.income-marker {
+  fill: steelblue;
 }
 
 #viz1, #col_viz {
@@ -209,7 +246,7 @@ body {
   font-size: 0.85em;
 }
 
-.label {
+div.label {
   font-size: 0.9rem;
   text-align: right;
   vertical-align: middle;

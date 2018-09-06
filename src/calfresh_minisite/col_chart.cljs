@@ -3,11 +3,11 @@
             [clojure.string :as string]
             [calfresh-minisite.col-data :as col-data]))
 
-(def width 400)
 (def height 300)
 (def container-id "col_viz")
 (def top-margin 15)
 (def bar-position 55)
+(def categories ["Housing" "Medical" "Transportation" "Child Care"])
 
 ;; General helpers
 (defn translate-str [x y]
@@ -19,27 +19,27 @@
                   first)]
     (merge data-row { "Housing" (* (first rent) 12)})))
 
-(defn create-svg []
+(defn create-svg [width]
   (-> js/d3
    (.select (str "#" container-id))
    (.append "svg")
    (.attr "width" width)
    (.attr "height" height)))
 
-(defn bar-scale []
+(defn bar-scale [width]
   (-> js/d3
    (.scaleLinear)
    (.domain #js [0 70000])
    (.range #js [0 (- width 140)])))
 
 ;; Stacked bar helpers
-(defn draw-segment [svg bar-scale bar-height data-row]
+(defn draw-segment [svg scale bar-height data-row]
   (fn [key-name]
     (-> svg
         (.append "rect")
         (.attr "x" 0)
         (.attr "y" 0)
-        (.attr "width" (bar-scale (get data-row key-name)))
+        (.attr "width" (scale (get data-row key-name)))
         (.attr "height" bar-height)
         (.classed (string/replace (string/lower-case key-name) " " "-") true)
     )))
@@ -58,7 +58,6 @@
                          (.classed "stacked-bar" true)
                          (.attr "transform"
                                 (translate-str bar-position top-offset)))
-        categories ["Housing" "Medical" "Transportation" "Child Care"]
         segment-generator (draw-segment segments-svg scale bar-height data-row)]
 
     (segment-generator "Housing")
@@ -104,9 +103,9 @@
    (.selectAll (str "#" container-id " svg"))
    (.remove)))
 
-(defn draw []
-  (let [scale (bar-scale)
-        svg (create-svg)
+(defn draw [width]
+  (let [scale (bar-scale width)
+        svg (create-svg width)
         bar-spacing 45]
 
     (draw-stack svg scale (nth col-data/col 1) 15 "All CA")
@@ -120,10 +119,8 @@
                 scale
                 (housing-cost-for-area "San Jose-Sunnyvale-Santa Clara, CA HUD Metro FMR Area" (nth col-data/col 1))
                 (+ (* 2 bar-spacing) 15)
-                "San Jose")
+                "San Jose")))
 
-    ))
-
-(defn redraw []
+(defn redraw [width]
   (clear)
-  (draw))
+  (draw width))
