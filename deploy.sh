@@ -3,7 +3,7 @@ git merge master
 
 rm -rf resources/public
 lein cljsbuild once min
-cp -r resources/public/*
+cp -r resources/public/* .
 git add -A
 
 git commit -m "New deploy"
