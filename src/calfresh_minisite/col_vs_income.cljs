@@ -49,8 +49,21 @@
 
 (defn filter-negative-counties [col-counties]
   (->> col-counties
-       (filter #(> 1000 (last (last %))))
-       ))
+       (filter #(> 2000 (last (last %))))))
+
+(defn filter-sf-area [col-counties]
+  (let [sf-counties ["Alameda" "Contra Costa" "San Francisco"
+                     "San Mateo" "Marin"]]
+    (->> col-counties
+         (filter
+          (fn [item] (some #{(first item)} sf-counties))))))
+
+(defn filter-la-area [col-counties]
+  (let [counties ["Los Angeles" "Riverside" "San Bernardino"
+                     "Ventura" "Orange"]]
+    (->> col-counties
+         (filter
+          (fn [item] (some #{(first item)} counties))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SVG drawing functions
@@ -92,7 +105,7 @@
         (.classed "label" true)
         (.text #(first %))
         (attrs {:x 0
-                :y (fn [_ i] (* i line-padding))}))))
+                :y (fn [_ i] (+ 1.5 (* i line-padding)))}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grid, Axis, Labels, etc
@@ -115,7 +128,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Public Drawing Functions
 (defn draw [ui-state width element-id]
-  (println "draw")
   (let [svg (create-svg width element-id)
 
         counties (map first col-data/income-data)

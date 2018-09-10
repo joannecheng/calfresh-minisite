@@ -7,7 +7,7 @@
 (def ui-state
   (atom {;; col-vs-income: changes state of the col vs income
          ;; visualization
-         ;; options: negative
+         ;; options: negative, sf-counties, la-counties
          :col-vs-income-view "negative"
          }))
 
