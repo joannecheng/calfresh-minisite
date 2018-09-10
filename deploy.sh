@@ -3,6 +3,7 @@ git merge master
 
 rm -rf resources/public
 lein cljsbuild once min
+make build-sass
 cp -r resources/public/* .
 git add -A
 
