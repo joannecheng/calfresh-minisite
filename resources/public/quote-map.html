@@ -9,40 +9,106 @@
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+
+    <link href="css/main.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
     <div id="quote_map_container">
       <div id="quote_map_content">
-        <div class="title">
-          <h1>
-            Quotes from CalFresh Applicants
-          </h1>
+
+        <div class="quote-map-section" id="section1">
+          <div class="title">
+            <h1>
+              Quotes from CalFresh Applicants
+            </h1>
+          </div>
+
+          <div class="quote-list">
+            <br /> Los Angeles
+            <br /> San Diego
+            <br /> Orange
+            <br /> Riverside
+            <br /> San Bernardino
+            <br /> Santa Clara
+            <br /> Alameda
+            <br /> Sacramento
+            <br /> Contra Costa
+            <br /> Fresno
+            <br /> Kern
+            <br /> San Francisco
+            <br /> Ventura
+            <br /> San Mateo
+            <br /> San Joaquin
+          </div>
         </div>
 
-        <div class="quote-list">
-          <br /> Los Angeles
-          <br /> San Diego
-          <br /> Orange
-          <br /> Riverside
-          <br /> San Bernardino
-          <br /> Santa Clara
-          <br /> Alameda
-          <br /> Sacramento
-          <br /> Contra Costa
-          <br /> Fresno
-          <br /> Kern
-          <br /> San Francisco
-          <br /> Ventura
-          <br /> San Mateo
-          <br /> San Joaquin
+        <div class="quote-map-section" id="section2">
+          <div class="title">
+            <h1>
+              Quotes from CalFresh Applicants
+            </h1>
+          </div>
+
+          <div class="quote-list">
+            <br /> Los Angeles
+            <br /> San Diego
+            <br /> Orange
+            <br /> Riverside
+            <br /> San Bernardino
+            <br /> Santa Clara
+            <br /> Alameda
+            <br /> Sacramento
+            <br /> Contra Costa
+            <br /> Fresno
+            <br /> Kern
+            <br /> San Francisco
+            <br /> Ventura
+            <br /> San Mateo
+            <br /> San Joaquin
+          </div>
         </div>
 
+        <div class="quote-map-section" id="section3">
+          <div class="title">
+            <h1>
+              Quotes from CalFresh Applicants
+            </h1>
+          </div>
+
+          <div class="quote-list">
+            <br /> Los Angeles
+            <br /> San Diego
+            <br /> Orange
+            <br /> Riverside
+            <br /> San Bernardino
+            <br /> Santa Clara
+            <br /> Alameda
+            <br /> Sacramento
+            <br /> Contra Costa
+            <br /> Fresno
+            <br /> Kern
+            <br /> San Francisco
+            <br /> Ventura
+            <br /> San Mateo
+            <br /> San Joaquin
+          </div>
+        </div>
 
       </div>
 
+      <!-- MAP BELOW -->
       <div id="quote_map">
       </div>
     </div>
+
+
+    <script src="js/compiled/calfresh_minisite.js" type="text/javascript">
+    </script>
+
+    <script>
+     mapboxgl.accessToken = "pk.eyJ1Ijoiam9hbm5lY2hlbmciLCJhIjoiYV9YSTdaZyJ9.tOevZpArPItdszzQl_GLJQ";
+     calfresh_minisite.core.main()
+    </script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 (ns calfresh-minisite.core
   (:require [calfresh-minisite.col-chart :as col-chart]
-            [calfresh-minisite.col-vs-income :as col-vs-income]))
+            [calfresh-minisite.col-vs-income :as col-vs-income]
+            [calfresh-minisite.quote-map :as quote-map]))
 
 ;; Cost of living visualization
 (defn width-of [element-id]
@@ -19,9 +20,12 @@
 (defn ^:export main []
   (create-resize-handler)
   (col-vs-income/redraw (width-of "col_vs_income"))
-  (col-chart/redraw (width-of "col_viz")))
+  (col-chart/redraw (width-of "col_viz"))
 
-(defn ^:export col_main [])
+  (if (some? (.getElementById js/document "quote_map"))
+    (quote-map/draw))
+  )
+
 
 (defn on-js-reload []
   ;; remove all event handlers created in here

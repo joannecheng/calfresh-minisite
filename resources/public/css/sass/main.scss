@@ -1,4 +1,5 @@
 @import "style-guide-4.0.4/_sass/main";
+@import "./_quote_map";
 
 $section-padding: 1em;
 
@@ -138,29 +139,6 @@ body {
     font-size: 3.5rem;
     line-height: 1em;
   }
-}
-
-#quote_map_container {
-  background-color: #FEFEFE;
-  margin: 0;
-  padding: 0;
-
-  #quote_map {
-    position: absolute;
-    top: 0px;
-    left: 50vw;
-    height: 100vh;
-    width: 50vw;
-  }
-
-  #quote_map_content {
-    height: 100vh;
-    width: 44vw;
-    padding-top: 4em;
-    margin-left: 4em;
-  }
-
-  // TODO: Mobile view
 }
 
 // Cost of Living vs Income Viz
