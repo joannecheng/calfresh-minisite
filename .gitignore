@@ -1,4 +1,5 @@
 /resources/public/js/compiled/**
+/resources/public/css/main.*
 figwheel_server.log
 pom.xml
 *jar
@@ -13,4 +14,4 @@ pom.xml
 .nrepl-port
 
 .sass-cache/
-resources/public/css/main.*
+/css/sass/style-guide-4.0.4/**
