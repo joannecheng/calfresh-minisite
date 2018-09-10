@@ -2,7 +2,6 @@
   (:require [cljsjs/d3]
             [calfresh-minisite.col-data :as col-data]))
 
-(def height 1100)
 (def categories ["Housing" "Medical" "Transportation" "Child Care" "Food" "Other" "Annual taxes"])
 (def line-padding 18)
 
@@ -15,12 +14,11 @@
   (doseq [[k v] m]
     (.attr el k v)))
 
-(defn create-svg [width]
+(defn create-svg [width element-id]
   (-> js/d3
-      (.select "#col_vs_income")
+      (.select (str "#" element-id))
       (.append "svg")
-      (.attr "width" width)
-      (.attr "height" height)))
+      (.attr "width" width)))
 
 (defn line-scale [min-val max-val width]
   (-> js/d3
@@ -48,6 +46,11 @@
   (let [cost (col-for-county county-name 2) ;; 2 is 1A 1C
         median-income (median-income-for county-name)]
     [median-income cost (- median-income cost)]))
+
+(defn filter-negative-counties [col-counties]
+  (->> col-counties
+       (filter #(> 1000 (last (last %))))
+       ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SVG drawing functions
@@ -111,13 +114,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Public Drawing Functions
-(defn draw [width]
-  (let [svg (create-svg width)
+(defn draw [ui-state width element-id]
+  (println "draw")
+  (let [svg (create-svg width element-id)
 
         counties (map first col-data/income-data)
         col-counties (->> (map income-col-difference counties)
                           (map vector counties)
                           (sort-by #(last (last %))))
+        filtered-counties (filter-negative-counties col-counties)
         lmargin 110
         rmargin 15
         tmargin 7
@@ -138,14 +143,16 @@
                       (.classed "col-lines" true)
                       (.attr "transform" (translate-str lmargin tmargin)))
         lscale (line-scale min-num max-num (- width (+ lmargin rmargin)))]
+    (-> svg
+        (.attr "height" (* line-padding (count filtered-counties))))
 
     ;; Grid, Legend, Annotations
-    (draw-grid grid-svg width col-counties tmargin)
+    (draw-grid grid-svg width filtered-counties tmargin)
 
-    (draw-lines lines-svg col-counties lscale)
-    (draw-marker lines-svg col-counties lscale "income-marker")
-    (draw-marker lines-svg col-counties lscale "col-marker")
-    (draw-label lines-svg col-counties)
+    (draw-lines lines-svg filtered-counties lscale)
+    (draw-marker lines-svg filtered-counties lscale "income-marker")
+    (draw-marker lines-svg filtered-counties lscale "col-marker")
+    (draw-label lines-svg filtered-counties)
     ))
 
 (defn clear []
@@ -154,6 +161,6 @@
       .remove)
   )
 
-(defn redraw [width]
+(defn redraw [ui-state width element-id]
   (clear)
-  (draw width))
+  (draw ui-state width element-id))

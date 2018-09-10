@@ -99,6 +99,8 @@ body {
   }
 
   .profile-image {
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
     background-color: #ccc;
     height: 350px;
     width: 100%;
@@ -142,9 +144,7 @@ body {
 }
 
 // Cost of Living vs Income Viz
-#cost_of_living {
-  margin-left: 3em;
-  padding-top: 3em;
+#col_vs_income {
   max-width: 980px;
 
   text.label {
