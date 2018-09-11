@@ -1,7 +1,9 @@
 (ns calfresh-minisite.core
   (:require [calfresh-minisite.col-chart :as col-chart]
             [calfresh-minisite.col-vs-income :as col-vs-income]
-            [calfresh-minisite.quote-map :as quote-map]))
+            [calfresh-minisite.quote-map :as quote-map]
+
+            [cljsjs.waypoints]))
 
 ;; UI State
 (def ui-state
@@ -10,6 +12,18 @@
          ;; options: negative, sf-counties, la-counties
          :col-vs-income-view "negative"
          }))
+
+;; Waypoints Handlers
+(defn change-nav [element-id]
+  )
+
+(defn side-nav-handler []
+  (let [element-id "making_ends_meet"]
+    (js/Waypoint.
+     #js {:element (.getElementById js/document element-id)
+          :handler change-nav
+          })
+    ))
 
 ;; Cost of living visualization
 (defn width-of [element-id]
@@ -31,6 +45,7 @@
 ;; Main Function
 ;; The function that calls all the draw functions
 (defn ^:export main []
+  (side-nav-handler)
   (let [col-vs-income "col_vs_income"]
     (col-chart/redraw (width-of "col_viz"))
 
