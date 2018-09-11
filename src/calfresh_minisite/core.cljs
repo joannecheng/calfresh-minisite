@@ -30,7 +30,7 @@
 
 (defn add-side-nav-handlers []
   (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "cta"]
-        controller (.Controller. js/ScrollMagic)]
+        controller (js/ScrollMagic.Controller.)]
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
 ;; Drawing visualizations
