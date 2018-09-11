@@ -40,10 +40,14 @@ body {
   .nav-item {
     background: #fff;
     padding: 0.25rem 0.5rem 0.5rem 1.5rem;
+
+    a {
+      text-decoration: none;
+    }
   }
 
   .active {
-    background-color: rgba(200, 80, 80, 0.6);
+    background-color: rgba(200, 200, 200, 0.6);
   }
 }
 
