@@ -6,6 +6,7 @@
 
 $section-padding: 1rem;
 $spacing: 2em;
+$content-line-height: 1.9rem;
 
 body {
   max-width: 100%;
@@ -75,6 +76,7 @@ body {
 
     p {
       font-size: 1.5rem;
+      line-height: $content-line-height;
     }
 
     .header-icon {
@@ -104,6 +106,7 @@ body {
 
   p {
     font-size: 1.2rem;
+    line-height: $content-line-height;
   }
 }
 
