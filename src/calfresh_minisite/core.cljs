@@ -16,15 +16,24 @@
 
 ;; Waypoints Handlers
 (defn change-nav [element-id]
-  (println "change nav"))
+  (let [active-nav "active"
+        nav-items (->> "nav-item"
+                       (.getElementsByClassName js/document)
+                       (.from js/Array))
+        selected-el (.getElementById js/document (str element-id "_nav"))]
 
-(defn side-nav-handler []
-  (let [element-id "making_ends_meet"]
+    (doseq [nav-item nav-items]
+      (.remove (.-classList nav-item) active-nav))
+    (.add (.-classList selected-el) active-nav)))
+
+(defn side-nav-handler [element-id]
     (js/Waypoint.
      #js {:element (.getElementById js/document element-id)
-          :handler (partial change-nav element-id)
-          })
-    ))
+          :handler (partial change-nav element-id)}))
+
+(defn add-side-nav-handlers []
+  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness"]]
+    (doseq [element-id element-ids] (side-nav-handler element-id))))
 
 ;; Cost of living visualization
 (defn width-of [element-id]
@@ -46,7 +55,7 @@
 ;; Main Function
 ;; The function that calls all the draw functions
 (defn ^:export main []
-  (side-nav-handler)
+  (add-side-nav-handlers)
   (let [col-vs-income "col_vs_income"]
     (col-chart/redraw (width-of "col_viz"))
 

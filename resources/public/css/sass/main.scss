@@ -41,6 +41,10 @@ body {
     background: #fff;
     padding: 0.25rem 0.5rem 0.5rem 1.5rem;
   }
+
+  .active {
+    background-color: rgba(200, 80, 80, 0.6);
+  }
 }
 
 .header {
