@@ -11,17 +11,18 @@
          ;; visualization
          ;; options: negative, sf-counties, la-counties
          :col-vs-income-view "negative"
+         :current-section nil
          }))
 
 ;; Waypoints Handlers
 (defn change-nav [element-id]
-  )
+  (println "change nav"))
 
 (defn side-nav-handler []
   (let [element-id "making_ends_meet"]
     (js/Waypoint.
      #js {:element (.getElementById js/document element-id)
-          :handler change-nav
+          :handler (partial change-nav element-id)
           })
     ))
 
