@@ -3,7 +3,7 @@
             [calfresh-minisite.col-vs-income :as col-vs-income]
             [calfresh-minisite.quote-map :as quote-map]
 
-            [cljsjs.waypoints]))
+            [cljsjs.ScrollMagic]))
 
 ;; UI State
 (def ui-state
@@ -14,28 +14,26 @@
          :current-section nil
          }))
 
-;; Waypoints Handlers
-(defn change-nav [element-id]
-  (let [active-nav "active"
-        nav-items (->> "nav-item"
-                       (.getElementsByClassName js/document)
-                       (.from js/Array))
-        selected-el (.getElementById js/document (str element-id "_nav"))]
+;; Scroll Handlers
+(defn height-of [element-id]
+  (let [el (.getElementById js/document element-id)]
+    (if (nil? el)
+      0
+      (.-clientHeight el))))
 
-    (doseq [nav-item nav-items]
-      (.remove (.-classList nav-item) active-nav))
-    (.add (.-classList selected-el) active-nav)))
-
-(defn side-nav-handler [element-id]
-    (js/Waypoint.
-     #js {:element (.getElementById js/document element-id)
-          :handler (partial change-nav element-id)}))
+(defn side-nav-handler [element-id controller]
+  (let [el-height (height-of element-id)]
+    (-> (js/ScrollMagic.Scene.
+         #js {:triggerElement (str "#" element-id) :duration el-height})
+      (.setClassToggle (str "#" element-id "_nav") "active")
+      (.addTo controller))))
 
 (defn add-side-nav-handlers []
-  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness"]]
-    (doseq [element-id element-ids] (side-nav-handler element-id))))
+  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness"]
+        controller (js/ScrollMagic.Controller.)]
+    (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
-;; Cost of living visualization
+;; Drawing visualizations
 (defn width-of [element-id]
   (let [el (.getElementById js/document element-id)]
     (if (nil? el)
@@ -68,7 +66,6 @@
     (if (some? (.getElementById js/document "quote_map"))
       (quote-map/draw))
     ))
-
 
 (defn on-js-reload []
   ;; remove all event handlers created in here
