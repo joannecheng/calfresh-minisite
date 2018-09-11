@@ -7,6 +7,7 @@
 $section-padding: 1rem;
 $spacing: 2em;
 $content-line-height: 1.9rem;
+$content-width: 720px;
 
 body {
   max-width: 100%;
@@ -60,7 +61,7 @@ body {
 
   .header-content {
     z-index: 100;
-    width: 980px;
+    width: $content-width;
 
     margin-left: auto;
     margin-right: auto;
@@ -71,7 +72,8 @@ body {
     color: #fff;
 
     h1 {
-      font-size: 5rem;
+      font-size: 4.5rem;
+      line-height: 1em;
     }
 
     p {
@@ -96,7 +98,7 @@ body {
 }
 
 .article-container, .cta {
-  max-width: 980px;
+  max-width: $content-width;
   margin-left: auto;
   margin-right: auto;
 
@@ -170,13 +172,12 @@ body {
 
   h1 {
     font-size: 3.5rem;
-    line-height: 1em;
   }
 }
 
 // Cost of Living vs Income Viz
 #col_vs_income {
-  max-width: 980px;
+  max-width: $content-width;
 
   text.label {
     font-size: 0.85em;
