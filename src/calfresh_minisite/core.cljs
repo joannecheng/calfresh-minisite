@@ -2,6 +2,7 @@
   (:require [calfresh-minisite.col-chart :as col-chart]
             [calfresh-minisite.col-vs-income :as col-vs-income]
             [calfresh-minisite.quote-map :as quote-map]
+            [calfresh-minisite.utils :as utils]
 
             [cljsjs.ScrollMagic]))
 
@@ -15,14 +16,8 @@
          }))
 
 ;; Scroll Handlers
-(defn height-of [element-id]
-  (let [el (.getElementById js/document element-id)]
-    (if (nil? el)
-      0
-      (.-clientHeight el))))
-
 (defn side-nav-handler [element-id controller]
-  (let [el-height (height-of element-id)]
+  (let [el-height (utils/height-of element-id)]
     (-> (js/ScrollMagic.Scene.
          #js {:triggerElement (str "#" element-id) :duration el-height})
       (.setClassToggle (str "#" element-id "_nav") "active")
@@ -34,14 +29,8 @@
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
 ;; Drawing visualizations
-(defn width-of [element-id]
-  (let [el (.getElementById js/document element-id)]
-    (if (nil? el)
-      0
-      (.-clientWidth el))))
-
 (defn redraw-chart [draw-function element-id]
-  (draw-function ui-state (width-of element-id) element-id))
+  (draw-function ui-state (utils/width-of element-id) element-id))
 
 (defn create-resize-handler [element-id]
   (.addEventListener
@@ -50,22 +39,22 @@
    (partial redraw-chart col-vs-income/redraw element-id))
   )
 
-;; Main Function
+;; Main Functions
 ;; The function that calls all the draw functions
-(defn ^:export main []
-  (add-side-nav-handlers)
+(defn draw-index []
   (let [col-vs-income "col_vs_income"]
-    (col-chart/redraw (width-of "col_viz"))
-
+    (add-side-nav-handlers)
+    (col-chart/redraw (utils/width-of "col_viz"))
     (create-resize-handler col-vs-income)
-    (col-vs-income/redraw
-     ui-state
-     (width-of col-vs-income)
-     col-vs-income)
+    (col-vs-income/redraw ui-state
+                          (utils/width-of col-vs-income)
+                          col-vs-income)))
 
+(defn ^:export main []
     (if (some? (.getElementById js/document "quote_map"))
-      (quote-map/draw))
-    ))
+      (quote-map/draw)
+      (draw-index))
+    )
 
 (defn on-js-reload []
   ;; remove all event handlers created in here
