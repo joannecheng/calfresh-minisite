@@ -53,8 +53,7 @@
 (defn ^:export main []
     (if (some? (.getElementById js/document "quote_map"))
       (quote-map/draw)
-      (draw-index))
-    )
+      (draw-index)))
 
 (defn on-js-reload []
   ;; remove all event handlers created in here

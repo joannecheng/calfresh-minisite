@@ -97,7 +97,6 @@
     ))
 
 ;; Main draw functions
-
 (defn clear []
   (-> js/d3
    (.selectAll (str "#" container-id " svg"))
