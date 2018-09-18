@@ -11,7 +11,7 @@
   (atom {;; col-vs-income: changes state of the col vs income
          ;; visualization
          ;; options: negative, sf-counties, la-counties
-         :col-vs-income-view "negative"
+         :income-view :median ;; median, lower-quartile
          :current-section nil
          }))
 
@@ -29,15 +29,11 @@
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
 ;; Drawing visualizations
-(defn redraw-chart [draw-function element-id]
-  (draw-function ui-state (utils/width-of element-id) element-id))
-
-(defn create-resize-handler [element-id]
+(defn redraw-chart [draw-function element-id] (draw-function ui-state (utils/width-of element-id) element-id)) (defn create-resize-handler [element-id]
   (.addEventListener
    js/window
    "resize"
-   (partial redraw-chart col-vs-income/redraw element-id))
-  )
+   (partial redraw-chart col-vs-income/redraw element-id)))
 
 ;; Main Functions
 ;; The function that calls all the draw functions
@@ -46,9 +42,17 @@
     (add-side-nav-handlers)
     (col-chart/redraw (utils/width-of "col_viz"))
     (create-resize-handler col-vs-income)
-    (col-vs-income/redraw ui-state
+    (col-vs-income/set-click-handlers ui-state)
+
+    (col-vs-income/redraw @ui-state
                           (utils/width-of col-vs-income)
-                          col-vs-income)))
+                          col-vs-income)
+
+    (add-watch ui-state :redraw
+               (fn [_key _atom old-state new-state]
+                 (col-vs-income/redraw new-state
+                                       (utils/width-of col-vs-income)
+                                       col-vs-income)))))
 
 (defn ^:export main []
     (if (some? (.getElementById js/document "quote_map"))
@@ -57,4 +61,5 @@
 
 (defn on-js-reload []
   ;; remove all event handlers created in here
+  (col-vs-income/unset-click-handlers)
   (main))

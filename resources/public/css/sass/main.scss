@@ -1,13 +1,10 @@
 @import "style-guide-4.0.4/_sass/main";
+@import "./_variables";
 @import "./_quote_map";
 @import "./_cost_of_living_viz";
+@import "./_cost_of_living_income";
 
 @import "./down_icon";
-
-$section-padding: 1rem;
-$spacing: 2em;
-$content-line-height: 1.9rem;
-$content-width: 1200px;
 
 body {
   max-width: 100%;
@@ -194,71 +191,5 @@ body {
 
   .header .header-content h1 {
     font-size: 3.5rem;
-  }
-}
-
-// Cost of Living vs Income Viz
-#col_vs_income {
-  max-width: $content-width;
-
-  text.label {
-    font-size: 0.85em;
-    text-anchor: end;
-    alignment-baseline: middle;
-  }
-
-  rect.even {
-    fill: none;
-  }
-  rect.odd {
-    fill: #eee;
-  }
-}
-
-.notes {
-  font-color: grey;
-  font-size: 0.95rem;
-
-  font-style: italics;
-}
-
-line.col-line {
-  stroke: #555;
-  stroke-width: 2px;
-}
-
-line.below {
-  stroke: #d62728;
-  stroke-width: 4px;
-}
-
-circle.col-marker {
-  fill: darkred;
-}
-
-circle.income-marker {
-  fill: steelblue;
-}
-
-.controls {
-  display: flex;
-  margin: 0 auto;
-  justify-content: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-
-  .control-button {
-    color: #000;
-    cursor: pointer;
-    padding: 0.3rem 0.5rem;
-    font-size: 0.8rem;
-    text-align: center;
-    border: 1px solid rgba(127, 125, 156, .54);
-    margin-left: -1px;
-  }
-
-  .front-curve {
-  }
-  .back-curve {
   }
 }

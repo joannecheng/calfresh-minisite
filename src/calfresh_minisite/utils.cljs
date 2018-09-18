@@ -11,3 +11,10 @@
     (if (nil? el)
       0
       (.-clientWidth el))))
+
+(defn attrs [el m]
+  (doseq [[k v] m]
+    (.attr el k v)))
+
+(defn translate-str [x y]
+  (str "translate(" x "," y ")"))
