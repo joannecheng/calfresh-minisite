@@ -29,7 +29,7 @@
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
 ;; Drawing visualizations
-(defn redraw-chart [draw-function element-id] (draw-function ui-state (utils/width-of element-id) element-id)) (defn create-resize-handler [element-id]
+(defn redraw-chart [draw-function element-id] (draw-function @ui-state (utils/width-of element-id) element-id)) (defn create-resize-handler [element-id]
   (.addEventListener
    js/window
    "resize"
