@@ -1,6 +1,10 @@
 (ns calfresh-minisite.quote-map
+  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljsjs.mapbox]
             [cljsjs.ScrollMagic]
+
+            [cljs-http.client :as http]
+            [cljs.core.async :refer [<!]]
 
             [calfresh-minisite.utils :as utils]))
 
@@ -34,16 +38,28 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Drawing
+(defn draw-california [quote-map-container]
+  (go (let [resp (<! (http/get "./data/california-counties.json"))]
+        (-> quote-map-container
+            (.addLayer (clj->js {:id "california_counties"
+                                 :type "line"
+                                 :source {:type "geojson"
+                                          :data (:body resp)}
+                                 :paint {:line-color "#ccc"
+                                         :line-width 1}
+                                 })))
+        )))
+
 (defn draw-map []
   (js/mapboxgl.Map.
    #js {:container "quote_map"
         :style "mapbox://styles/mapbox/dark-v9",
         :maxBounds (js/mapboxgl.LngLatBounds.
-                    #js [-124.48200988, 32.52952194]
-                    #js [-114.13077545, 42.00950241])
-        })
-  )
+                    #js [-124.48200988, 31.52952194]
+                    #js [-114.13077545, 43.00950241])
+        }))
 
 (defn draw []
   (let [quote-map-container (draw-map)]
-    (scroll-handlers quote-map-container)))
+    (scroll-handlers quote-map-container)
+    (draw-california quote-map-container)))

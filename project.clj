@@ -11,6 +11,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.238"]
                  [org.clojure/core.async  "0.4.474"]
+                 [cljs-http "0.1.45"]
 
                  [cljsjs/d3 "4.12.0-0"]
                  [cljsjs/mapbox "0.46.0-0"]]

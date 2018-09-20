@@ -1,5 +1,6 @@
 #quote_map_container {
-  background-color: #FEFEFE;
+  background-color: #1a1a1a; //rgb(31,32,32);
+  color: #fefefe;
   margin: 0;
   padding: 0;
 
@@ -13,12 +14,15 @@
     width: 50vw;
   }
 
-  #quote_map_content {
+  #quote_map_content, #quote_map_quotes {
     width: 100%;
     height: 100vh;
 
     box-sizing: content-box;
     overflow-y: scroll;
+  }
+
+  #quote_map_quotes {
   }
 
   .quote-map-section {
