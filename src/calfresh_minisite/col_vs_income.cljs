@@ -5,7 +5,7 @@
             [calfresh-minisite.utils :as utils]))
 
 (def categories ["Housing" "Medical" "Transportation" "Child Care" "Food" "Other" "Annual taxes"])
-(def line-padding 15)
+(def line-padding 16)
 
 (def income-data-index {:lower-quartile 1
                         :median 2})
@@ -18,10 +18,10 @@
       (.append "svg")
       (.attr "width" width)))
 
-(defn line-scale [min-val max-val width]
+(defn line-scale [width]
   (-> js/d3
       (.scaleLinear)
-      (.domain #js [(- min-val 2000) max-val])
+      (.domain #js [0 93854])
       (.range #js [0 width])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,14 +167,6 @@
         lmargin 110
         rmargin 15
         tmargin 7
-        max-num (->> col-counties
-                     (map second)
-                     flatten
-                     (reduce max))
-        min-num (->> col-counties
-                     (map #(take 2 (second %)))
-                     flatten
-                     (reduce min))
         grid-svg (-> svg
                      (.append "g")
                      (.classed "grid" true)
@@ -183,9 +175,10 @@
                       (.append "g")
                       (.classed "col-lines" true)
                       (.attr "transform" (utils/translate-str lmargin tmargin)))
-        lscale (line-scale min-num max-num (- width (+ lmargin rmargin)))]
+        lscale (line-scale (- width (+ lmargin rmargin)))]
     (-> svg
         (.attr "height" (* line-padding (count filtered-counties))))
+
 
     ;; Grid, Legend, Annotations
     (interaction-controls ui-state)
