@@ -85,7 +85,7 @@
   (let [x-function #(lscale (if (= marker-class "col-marker")
                               (second (second %))
                               (first (second %))))
-        marker-height 2]
+        marker-height 3]
     (-> svg
         (.selectAll (str "circle." marker-class))
         (.data (clj->js col-counties))
@@ -158,9 +158,25 @@
                     :width width
                     :height line-padding})))
 
-(defn draw-gridlines [svg width scale tmargin]
-  (println "drawing gridlines")
-  )
+(defn draw-gridlines [svg width height scale tmargin lmargin]
+  (let [grid-container (-> svg
+                           (.append "g")
+                           (.classed "grid-lines" true)
+                           (.attr "transform" (utils/translate-str lmargin -7)))
+        grid-vals #js [20000 30000 40000 50000 60000 70000 80000 90000 100000]]
+    (-> grid-container
+        (.selectAll "grid-line")
+        (.data grid-vals)
+        (.enter)
+        (.append "line")
+        (.classed "grid-line" true)
+        (utils/attrs {:x1 #(scale %)
+                      :x2 #(scale %)
+                      :y1 0
+                      :y2 (- height tmargin)
+                      :stroke "#aaa"
+                      :stroke-width 0.5})
+    )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Controls interaction
@@ -203,14 +219,16 @@
                       (.append "g")
                       (.classed "col-lines" true)
                       (.attr "transform" (utils/translate-str lmargin tmargin)))
-        lscale (line-scale (- width (+ lmargin rmargin)))]
+        lscale (line-scale (- width (+ lmargin rmargin)))
+        height (+ tmargin (* line-padding (count filtered-counties)))]
+
     (-> svg
-        (.attr "height" (+ tmargin (* line-padding (count filtered-counties)))))
+        (.attr "height" height))
 
     ;; Grid, Legend, Annotations
     (interaction-controls ui-state)
     (draw-grid grid-svg width filtered-counties tmargin)
-    (draw-gridlines grid-svg width lscale tmargin)
+    (draw-gridlines grid-svg width height lscale tmargin lmargin)
     (draw-lines lines-svg filtered-counties lscale)
     (draw-marker lines-svg filtered-counties lscale "income-marker")
     (draw-marker lines-svg filtered-counties lscale "col-marker")
