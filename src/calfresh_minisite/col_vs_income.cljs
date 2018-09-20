@@ -5,7 +5,7 @@
             [calfresh-minisite.utils :as utils]))
 
 (def categories ["Housing" "Medical" "Transportation" "Child Care" "Food" "Other" "Annual taxes"])
-(def line-padding 18)
+(def line-padding 15)
 
 (def income-data-index {:lower-quartile 1
                         :median 2})
@@ -78,31 +78,42 @@
                       :y1 (fn [_ i] (* i line-padding))
                       :y2 (fn [_ i] (* i line-padding))})))
 
-(defn draw-marker [svg col-counties lscale marker-class]
+(defn draw-marker
   ;; Cost of living is second element in second el (sorry, future joanne)
+  [svg col-counties lscale marker-class]
+
+  (let [x-function #(lscale (if (= marker-class "col-marker")
+                              (second (second %))
+                              (first (second %))))
+        marker-height 2]
   (-> svg
       (.selectAll (str "circle." marker-class))
       (.data (clj->js col-counties))
       (.enter)
-      (.append "circle")
+      (.append "line")
       (.classed marker-class true)
       (.classed "marker" true)
-      (utils/attrs {:r 2
-              :cy (fn [_ i] (* i line-padding))
-              :cx #(lscale (if (= marker-class "col-marker")
-                             (second (second %))
-                             (first (second %))))}))
+      (utils/attrs {:y2 (fn [_ i] (+ (* i line-padding) marker-height))
+                    :y1(fn [_ i] (- (* i line-padding) marker-height))
+                    :x1 x-function
+                    :x2 x-function
+                    })))
 
   (defn draw-label [svg col-counties]
-    (-> svg
-        (.selectAll "text.county-label")
-        (.data (clj->js col-counties))
-        (.enter)
-        (.append "text")
-        (.classed "county-label" true)
-        (.text #(first %))
-        (utils/attrs {:x 0
-                :y (fn [_ i] (+ 1.5 (* i line-padding)))}))))
+    (let [most-populated col-data/most-populated-counties]
+      (-> svg
+          (.selectAll "text.county-label")
+          (.data (clj->js col-counties))
+          (.enter)
+          (.append "text")
+          (.classed "county-label" true)
+          ;;(.text #(let [county-name (first %)]
+          ;;           (if (contains? most-populated county-name)
+          ;;             county-name)))
+          (.text #(first %))
+          (utils/attrs {:x 0
+                        :y (fn [_ i] (+ 1.5 (* i line-padding)))})))
+    ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

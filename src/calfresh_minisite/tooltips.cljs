@@ -2,7 +2,7 @@
   (:require [cljsjs/d3]
             [calfresh-minisite.utils :as utils]))
 
-(def tmargin 6)
+(def tmargin 3)
 (def lmargin 5)
 
 (defn tooltip-svg []
@@ -15,7 +15,7 @@
       (.append "rect")
       (.classed "tooltip-background" true)
       (utils/attrs {:x 0 :y 0
-                    :width 150 :height 40})))
+                    :width 150 :height 45})))
 
 (defn tooltip-text [tooltip-container data-row]
   (let [title (first data-row)
@@ -33,15 +33,22 @@
   (-> tooltip-text
       (.append "text")
       (.classed "tooltip-description" true)
-      (.text (str med-income "-" col))
+      (.text (str "Income: " med-income))
       (utils/attrs {:x (+ lmargin)
-                     :y (+ tmargin 20)}))
+                    :y (+ tmargin 22)}))
+
+  (-> tooltip-text
+      (.append "text")
+      (.classed "tooltip-description" true)
+      (.text (str "Min Cost of Living: " col))
+      (utils/attrs {:x (+ lmargin)
+                    :y (+ tmargin 34)}))
 
   ))
 
 (defn position-tooltip [tooltip-container]
-  (let [x (.-offsetX (.-event js/d3))
-        y (.-offsetY (.-event js/d3))]
+  (let [x (+ 10 (.-offsetX (.-event js/d3)))
+        y (+ 10 (.-offsetY (.-event js/d3)))]
     (-> tooltip-container
         (.attr "transform" (utils/translate-str x y)))))
 

@@ -36,6 +36,10 @@
     font-color: grey;
     font-size: 0.75rem;
   }
+
+  .tooltip-title {
+    font-weight: bold;
+  }
 }
 
 /* EXTRAS */
@@ -56,12 +60,14 @@ line.below {
   stroke-width: 1px;
 }
 
-circle.col-marker {
-  fill: darkred;
+line.col-marker {
+  stroke: #333;
+  stroke-weight: 0.5px;
 }
 
-circle.income-marker {
-  fill: steelblue;
+line.income-marker {
+  stroke: #333;
+  stroke-weight: 0.5px;
 }
 
 .active {

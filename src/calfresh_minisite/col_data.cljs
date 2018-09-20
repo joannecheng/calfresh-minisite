@@ -259,3 +259,22 @@
    ["Yolo",22841,46941,55823,73152,34789,42143,47637,55056,nil,34789,50403,61548,74618],
    ["Yuba",20333,43473,52355,68568,32329,38675,44169,50472,nil,32329,46935,58080,70034]
    ])
+
+(def most-populated-counties
+  {"Los Angeles" 10163507
+   "San Diego" 3337685
+   "Orange" 3190400
+   "Riverside" 2423266
+   "San Bernardino" 2157404
+   "Santa Clara" 1938153
+   "Alameda" 1663190
+   "Sacramento" 1530615
+   "Contra Costa" 1147439
+   "Fresno" 989255
+   "Kern" 893119
+   "San Francisco" 884363
+   "Ventura" 854223
+   "San Mateo" 771410
+   "San Joaquin" 745424
+   "Stanislaus" 547899
+   "Sonoma" 504217})
