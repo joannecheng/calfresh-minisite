@@ -19,6 +19,7 @@
 
 (defn tooltip-text [tooltip-container data-row]
   (let [title (first data-row)
+        number-format (.format js/d3 "$,.0f")
         med-income (first (last data-row))
         col (second (last data-row))
         tooltip-text (-> tooltip-container
@@ -33,16 +34,16 @@
   (-> tooltip-text
       (.append "text")
       (.classed "tooltip-description" true)
-      (.text (str "Income: " med-income))
+      (.text (str "Income: " (number-format med-income)))
       (utils/attrs {:x (+ lmargin)
                     :y (+ tmargin 22)}))
 
   (-> tooltip-text
       (.append "text")
       (.classed "tooltip-description" true)
-      (.text (str "Min Cost of Living: " col))
+      (.text (str "Min Cost of Living: " (number-format col)))
       (utils/attrs {:x (+ lmargin)
-                    :y (+ tmargin 34)}))
+                    :y (+ tmargin 35)}))
 
   ))
 

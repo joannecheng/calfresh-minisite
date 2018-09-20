@@ -11,6 +11,12 @@
     alignment-baseline: middle;
   }
 
+  text.number-label {
+    font-size: 0.7em;
+    text-anchor: start;
+    alignment-baseline: middle;
+  }
+
   rect.even {
     fill: #fff;
   }

@@ -86,34 +86,58 @@
                               (second (second %))
                               (first (second %))))
         marker-height 2]
-  (-> svg
-      (.selectAll (str "circle." marker-class))
-      (.data (clj->js col-counties))
-      (.enter)
-      (.append "line")
-      (.classed marker-class true)
-      (.classed "marker" true)
-      (utils/attrs {:y2 (fn [_ i] (+ (* i line-padding) marker-height))
-                    :y1(fn [_ i] (- (* i line-padding) marker-height))
-                    :x1 x-function
-                    :x2 x-function
-                    })))
+    (-> svg
+        (.selectAll (str "circle." marker-class))
+        (.data (clj->js col-counties))
+        (.enter)
+        (.append "line")
+        (.classed marker-class true)
+        (.classed "marker" true)
+        (utils/attrs {:y2 (fn [_ i] (+ (* i line-padding) marker-height))
+                      :y1(fn [_ i] (- (* i line-padding) marker-height))
+                      :x1 x-function
+                      :x2 x-function
+                      }))))
 
-  (defn draw-label [svg col-counties]
-    (let [most-populated col-data/most-populated-counties]
-      (-> svg
-          (.selectAll "text.county-label")
-          (.data (clj->js col-counties))
-          (.enter)
-          (.append "text")
-          (.classed "county-label" true)
-          ;;(.text #(let [county-name (first %)]
-          ;;           (if (contains? most-populated county-name)
-          ;;             county-name)))
-          (.text #(first %))
-          (utils/attrs {:x 0
-                        :y (fn [_ i] (+ 1.5 (* i line-padding)))})))
-    ))
+(defn draw-label [svg col-counties]
+  (let [number-format (.format js/d3 "$,.0f")
+        most-populated col-data/most-populated-counties]
+    (-> svg
+        (.append "text")
+        (.text "Cost of living/Income diff")
+        (utils/attrs {:x 10 :y -13
+                      :font-weight "bold"
+                      :font-color "grey"
+                      :font-size "0.75em"}))
+    (-> svg
+        (.append "text")
+        (.text "County")
+        (utils/attrs {:x 0 :y -13
+                      :text-anchor "end"
+                      :font-weight "bold"
+                      :font-color "grey"
+                      :font-size "0.75em"}))
+    (-> svg
+        (.selectAll "text.number-label")
+        (.data (clj->js col-counties))
+        (.enter)
+        (.append "text")
+        (.classed "number-label" true)
+        (.text #(number-format (last (last %))))
+        (utils/attrs {:x 10
+                      :y (fn [_ i] (+ 1.5 (* i line-padding)))}))
+    (-> svg
+        (.selectAll "text.county-label")
+        (.data (clj->js col-counties))
+        (.enter)
+        (.append "text")
+        (.classed "county-label" true)
+        ;;(.text #(let [county-name (first %)]
+        ;;           (if (contains? most-populated county-name)
+        ;;             county-name)))
+        (.text #(first %))
+        (utils/attrs {:x 0
+                      :y (fn [_ i] (+ 1.5 (* i line-padding)))}))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -129,17 +153,21 @@
       (.on "mouseover" #(tooltips/draw-tooltip %))
       (.on "mouseout" tooltips/remove-tooltip)
       (utils/attrs {:transform (utils/translate-str 0 (/ line-padding -2))
-              :x 0
-              :y (fn [_ i] (* i line-padding))
-              :width width
-              :height line-padding})))
+                    :x 0
+                    :y (fn [_ i] (* i line-padding))
+                    :width width
+                    :height line-padding})))
+
+(defn draw-gridlines [svg width scale tmargin]
+  (println "drawing gridlines")
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Controls interaction
-(defn income-view [ui-state]
-  (get ui-state :income-view))
+  ;; Controls interaction
+  (defn income-view [ui-state]
+    (get ui-state :income-view))
 
-(defn income-controls [ui-state]
+  (defn income-controls [ui-state]
   (let [income-controls (.select js/d3 "#income_controls")]
     (-> income-controls
         (.selectAll "a")
@@ -166,7 +194,7 @@
         filtered-counties (filter-negative-counties col-counties)
         lmargin 110
         rmargin 15
-        tmargin 7
+        tmargin 23
         grid-svg (-> svg
                      (.append "g")
                      (.classed "grid" true)
@@ -177,12 +205,12 @@
                       (.attr "transform" (utils/translate-str lmargin tmargin)))
         lscale (line-scale (- width (+ lmargin rmargin)))]
     (-> svg
-        (.attr "height" (* line-padding (count filtered-counties))))
-
+        (.attr "height" (+ tmargin (* line-padding (count filtered-counties)))))
 
     ;; Grid, Legend, Annotations
     (interaction-controls ui-state)
     (draw-grid grid-svg width filtered-counties tmargin)
+    (draw-gridlines grid-svg width lscale tmargin)
     (draw-lines lines-svg filtered-counties lscale)
     (draw-marker lines-svg filtered-counties lscale "income-marker")
     (draw-marker lines-svg filtered-counties lscale "col-marker")
