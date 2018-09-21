@@ -51,9 +51,9 @@
     (set! (.-innerHTML el) "")
 
     (if (> (count county-quotes) 0)
-      (set! (.-innerHTML el) (str "<p class=\"blockquote animated fadeInDown\">"
+      (set! (.-innerHTML el) (str "<blockquote class=\"animated fadeInDown\">"
                                   (rand-nth county-quotes)
-                                  "</p>"
+                                  "</blockquote>"
                                   "<div class=\"profile-image\">Image here</div>")))))
 
 

@@ -6,6 +6,43 @@
 
   overflow-y: hidden;
 
+  blockquote {
+    color: #fefefe;
+    position: relative;
+    margin: 0.25em 0;
+    padding: 0.35em 30px;
+  }
+
+  blockquote:before {
+    display: block;
+    padding-left: 10px;
+    content: "\201C";
+    font-size: 80px;
+    position: absolute;
+    left: -20px;
+    top: -20px;
+    color: #fefefe;
+  }
+
+  blockquote cite {
+    color: #fefefe;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+  }
+
+  blockquote cite:before {
+    content: "\2014 \2009";
+  }
+
+
+  .profile-image {
+    margin-top: 1rem;
+    width: 150px;
+    height: 150px;
+    background: #666;
+  }
+
   #quote_map {
     position: fixed;
     top: 0px;
