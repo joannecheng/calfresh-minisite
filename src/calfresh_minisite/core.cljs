@@ -4,6 +4,8 @@
             [calfresh-minisite.quote-map :as quote-map]
             [calfresh-minisite.utils :as utils]
 
+            [calfresh-minisite.ui-state-validators :as v]
+
             [cljsjs.ScrollMagic]))
 
 ;; UI State
@@ -50,9 +52,11 @@
 
     (add-watch ui-state :redraw
                (fn [_key _atom old-state new-state]
+                 (v/validate-ui-state new-state)
                  (col-vs-income/redraw new-state
                                        (utils/width-of col-vs-income)
-                                       col-vs-income)))))
+                                       col-vs-income)))
+    ))
 
 (defn ^:export main []
     (if (some? (.getElementById js/document "quote_map"))
