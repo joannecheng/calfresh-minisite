@@ -43,7 +43,10 @@
    "San Benito" []
    "San Bernardino" []
    "San Diego" []
-   "San Francisco" []
+   "San Francisco" ["I work for a non-profit in San Francisco and I live in Oakland; therefore a big portion of my paycheck goes to transportation (roughly $360) a month."
+                    "I am currently going to college as a full time student, and I do not have full financial aid coverage"
+                    "Disability was declined. I really need help for food and other basic necessities."
+                    ]
    "San Joaquin" []
    "San Luis Obispo" []
    "San Mateo" []
