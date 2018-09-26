@@ -1,10 +1,11 @@
 (ns calfresh-minisite.quote-map
-  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require-macros [cljs.core.async.macros :refer [go]]
+                   [clojure.string :as str])
   (:require [cljsjs.mapbox]
             [cljsjs.ScrollMagic]
 
-            [cljs-http.client :as http]
-            [cljs.core.async :refer [<!]]
+            [ajax.core :refer [GET POST]]
+            [clojure.string :as string]
 
             [calfresh-minisite.quotes :as quotes]
             [calfresh-minisite.utils :as utils]))
@@ -45,16 +46,19 @@
   (let [el (.getElementById js/document "quote_county_name")]
     (set! (.-innerHTML el) (str "<h2>" county-name "</h2>"))))
 
+(defn quote-html [county-quote]
+  (str "<blockquote class=\"animated fadeInDown\">"
+       county-quote
+       "</blockquote>"
+       "<div class=\"profile-image\">Image here</div>"))
+
 (defn show-quotes [county-name]
   (let [county-quotes (get quotes/quotes county-name)
         el (.getElementById js/document "quote_list")]
     (set! (.-innerHTML el) "")
 
     (if (> (count county-quotes) 0)
-      (set! (.-innerHTML el) (str "<blockquote class=\"animated fadeInDown\">"
-                                  (rand-nth county-quotes)
-                                  "</blockquote>"
-                                  "<div class=\"profile-image\">Image here</div>")))))
+      (set! (.-innerHTML el) (string/join " " (map quote-html county-quotes))))))
 
 
 (defn update-quotes [county-name]
@@ -72,50 +76,63 @@
   ;; This is complicated because of Mapbox Gl's DSL
   ;; See https://www.mapbox.com/mapbox-gl-js/example/hover-styles/ for more
   ;; information on what's going on
-  [quote-map-container]
-  (go (let [resp (<! (http/get "./data/california-counties.json"))]
-        (-> quote-map-container
-            (.addSource "counties", (clj->js {:type "geojson" :data (:body resp)})
-             ))
-        (-> quote-map-container
-            (.addLayer (clj->js {:id "california-county-fill"
-                                 :type "fill"
-                                 :source "counties"
-                                 :layout {}
-                                 :paint {:fill-color "#e25050"
-                                         :fill-opacity ["case"
-                                                        ["boolean" ["feature-state" "hover"] false]
-                                                        0.6 0]}})))
+  [quote-map-container resp]
 
-        (-> quote-map-container
-            (.addLayer (clj->js {:id "california-counties"
-                                 :type "line"
-                                 :source "counties"
-                                 :paint {:line-color "#ccc"
-                                         :line-width 1}})))
+  (-> quote-map-container
+      (.addSource "counties", (clj->js {:type "geojson" :data resp})))
+  (-> quote-map-container
+      (.addLayer (clj->js {:id "california-county-fill"
+                           :type "fill"
+                           :source "counties"
+                           :layout {}
+                           :paint {:fill-color "#e25050"
+                                   :fill-opacity ["case"
+                                                  ["boolean" ["feature-state" "hover"] false]
+                                                  0.6 0]}})))
 
-        (-> quote-map-container
-            (.on "mousemove", "california-county-fill",
-                 #(let [county-id (.-id (first (.-features %)))
-                        county-name (.-name (.-properties (first (.-features %))))]
-                    (if (some? @hovered-state-id)
-                      (set-county-hover quote-map-container
-                                        @hovered-state-id false))
-                    (if (not= @hovered-state-id county-id)
-                      (update-quotes county-name))
+  (-> quote-map-container
+      (.addLayer (clj->js {:id "california-counties"
+                           :type "line"
+                           :source "counties"
+                           :paint {:line-color "#ccc"
+                                   :line-width 1}})))
 
-                    (reset! hovered-state-id county-id)
-                    (set-county-hover quote-map-container
-                                      county-id true))))
+  (-> quote-map-container
+      (.on "click", "california-county-fill",
+           #(let [county-id (.-id (first (.-features %)))
+                  county-name (.-name (.-properties (first (.-features %))))]
+              (if (some? @hovered-state-id)
+                (set-county-hover quote-map-container
+                                  @hovered-state-id false))
+              (if (not= @hovered-state-id county-id)
+                (update-quotes county-name))
 
-        (-> quote-map-container
-            (.on "mouseleave", "california-county-fill",
-                 (fn []
-                   (if (some? @hovered-state-id)
-                     (set-county-hover quote-map-container
-                                       @hovered-state-id false))
-                   (reset! hovered-state-id nil))))
-        )))
+              (reset! hovered-state-id county-id)
+              (set-county-hover quote-map-container
+                                county-id true))))
+
+  ;;(-> quote-map-container
+  ;;    (.on "mousemove", "california-county-fill",
+  ;;         #(let [county-id (.-id (first (.-features %)))
+  ;;                county-name (.-name (.-properties (first (.-features %))))]
+  ;;            (if (some? @hovered-state-id)
+  ;;              (set-county-hover quote-map-container
+  ;;                                @hovered-state-id false))
+  ;;            (if (not= @hovered-state-id county-id)
+  ;;              (update-quotes county-name))
+
+  ;;            (reset! hovered-state-id county-id)
+  ;;            (set-county-hover quote-map-container
+  ;;                              county-id true))))
+
+  ;;(-> quote-map-container
+  ;;    (.on "mouseleave", "california-county-fill",
+  ;;         (fn []
+  ;;           (if (some? @hovered-state-id)
+  ;;             (set-county-hover quote-map-container
+  ;;                               @hovered-state-id false))
+  ;;           (reset! hovered-state-id nil))))
+  )
 
 (defn draw-map []
   (js/mapboxgl.Map.
@@ -129,4 +146,6 @@
 (defn draw []
   (let [quote-map-container (draw-map)]
     ;;(scroll-handlers quote-map-container)
-    (draw-california quote-map-container)))
+    (GET "./data/california-counties.json"
+         :response-format :json
+         :handler (partial draw-california quote-map-container))))
