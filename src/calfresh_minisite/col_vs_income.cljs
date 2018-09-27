@@ -9,6 +9,12 @@
 
 (def income-data-index {:lower-quartile 1
                         :median 2})
+(def family-type-index {:one_adult_one_child 2
+                        :one_adult_two_children 3
+                        :one_adult_three_children 4
+                        :two_adults_one_child 5
+                        :two_adults_two_children 6
+                        :two_adults_three_children 7})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General Helpers
@@ -40,28 +46,14 @@
 
 (defn income-col-difference
   ;; Return median income, cost of living, and median income - cost of living
-  [income-index county-name]
-  (let [cost (col-for-county county-name 2)
+  [col-index income-index county-name]
+  (let [cost (col-for-county county-name col-index)
         median-income (income-for county-name income-index)]
     [median-income cost (- median-income cost)]))
 
 (defn filter-negative-counties [col-counties]
   (->> col-counties
        (filter #(> 2000 (last (last %))))))
-
-(defn filter-sf-area [col-counties]
-  (let [sf-counties ["Alameda" "Contra Costa" "San Francisco"
-                     "San Mateo" "Marin"]]
-    (->> col-counties
-         (filter
-          (fn [item] (some #{(first item)} sf-counties))))))
-
-(defn filter-la-area [col-counties]
-  (let [counties ["Los Angeles" "Riverside" "San Bernardino"
-                     "Ventura" "Orange"]]
-    (->> col-counties
-         (filter
-          (fn [item] (some #{(first item)} counties))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SVG drawing functions
@@ -175,26 +167,47 @@
                       :y1 0
                       :y2 (- height tmargin)
                       :stroke "#aaa"
-                      :stroke-width 0.5})
-    )))
+                      :stroke-width 0.5}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Controls interaction
-  (defn income-view [ui-state]
-    (get ui-state :income-view))
+;; Controls interaction
+(defn income-view [ui-state]
+  (get ui-state :income-view))
 
-  (defn income-controls [ui-state]
+(defn family-type [ui-state]
+  (let [num-children (get ui-state :number-children)
+        num-adults (get ui-state :number-adults)
+        key-name (str (name num-adults) "_" (name num-children))]
+    (keyword key-name)))
+
+(defn clear-controls [el]
+  (-> el
+      (.selectAll "a")
+      (.classed "active" false)))
+
+(defn set-active-control [el active-state-name]
+  (-> el
+      (.select (str "[data-name='" active-state-name "']"))
+      (.classed "active" true))
+  )
+
+(defn income-controls [ui-state]
   (let [income-controls (.select js/d3 "#income_controls")]
-    (-> income-controls
-        (.selectAll "a")
-        (.classed "active" false))
+    (clear-controls income-controls)
+    (set-active-control income-controls (name (income-view ui-state)))))
 
-     (-> income-controls
-         (.select (str "[data-name='" (name (income-view ui-state)) "']"))
-         (.classed "active" true))))
+(defn family-type-controls [ui-state]
+  (let [num-children-controls (.select js/d3 "#num_children_controls")
+        num-adults-controls (.select js/d3 "#num_adults_controls")]
+    (clear-controls num-children-controls)
+    (clear-controls num-adults-controls)
+
+    (set-active-control num-children-controls (name (get ui-state :number-children)))
+    (set-active-control num-adults-controls (name (get ui-state :number-adults)))))
 
 (defn interaction-controls [ui-state]
-  (income-controls ui-state))
+  (income-controls ui-state)
+  (family-type-controls ui-state))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Public Drawing Functions
@@ -202,6 +215,7 @@
   (let [svg (create-svg width element-id)
         counties (map first col-data/income-data)
         col-counties (->> (map (partial income-col-difference
+                                        (get family-type-index (family-type ui-state))
                                         (get income-data-index (income-view ui-state)))
                                counties)
                           (map vector counties)

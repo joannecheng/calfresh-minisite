@@ -10,7 +10,7 @@
     color: #fefefe;
     position: relative;
     margin: 0.25em 0;
-    padding: 0.35em 30px;
+    padding: 0.35em 60px;
   }
 
   blockquote:before {
@@ -35,6 +35,10 @@
     content: "\2014 \2009";
   }
 
+  .county-info {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
 
   .profile-image {
     margin-top: 1rem;

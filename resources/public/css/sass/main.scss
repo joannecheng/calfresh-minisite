@@ -12,14 +12,6 @@ body {
   font-color: #333;
 }
 
-.grid-box {
-  //border: 1px dashed black;
-}
-
-.grid-item {
-  //border: 1px dashed red;
-}
-
 .side-nav {
   width: 15vw;
   position: fixed;
@@ -82,7 +74,7 @@ body {
     padding-left: 4vw;
     padding-right: 4vw;
 
-    color: #fff;
+    color: $color-white;
 
     h1 {
       font-size: 4.5rem;
@@ -90,7 +82,7 @@ body {
     }
 
     p {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       line-height: $content-line-height;
     }
 
@@ -103,7 +95,7 @@ body {
       position: relative;
 
       a {
-        color: #fff;
+        color: $color-white;
         text-decoration: none;
       }
     }
@@ -118,7 +110,7 @@ body {
   overflow-x: hidden;
   padding: $spacing 4vw $spacing 4vw;
 
-  p {
+  p, ul {
     font-size: 1.1rem;
     line-height: $content-line-height;
   }
@@ -146,11 +138,16 @@ body {
   }
 
   .notes, .visualization {
-    padding-top: $spacing;
+    //padding-: $spacing;
+  }
+  .notes {
+    color: $color-grey-700;
+    font-style: italic;
+    padding-bottom: $spacing;
   }
 
   .profile-image {
-    //margin-top: 1rem;
+    margin-top: 0.625rem;
     margin-bottom: 0.625rem;
     background-color: #ccc;
     height: 350px;
