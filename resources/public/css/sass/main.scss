@@ -138,9 +138,12 @@ body {
     padding-top: $spacing;
   }
 
-  .notes, .visualization {
-    //padding-: $spacing;
+  .aside-notes {
+    background-color: $color-grey-300;
+    margin: 3em;
+    padding: 1em 2em 1em 2em;
   }
+
   .notes {
     color: $color-grey-700;
     font-style: italic;
