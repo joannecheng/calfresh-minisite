@@ -111,7 +111,7 @@ body {
   overflow-x: hidden;
   padding: $spacing 4vw $spacing 4vw;
 
-  p, ul {
+  p, ul, li {
     font-size: 1.2rem;
     line-height: $content-line-height;
   }
@@ -187,6 +187,9 @@ body {
 
 #cta {
   height: 80vh;
+}
+.global-footer {
+  margin-top: 0;
 }
 
 @media only screen and (max-width: 800px) {
