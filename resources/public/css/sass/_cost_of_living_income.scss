@@ -6,13 +6,13 @@
   max-width: $content-width;
 
   text.county-label {
-    font-size: 0.7em;
+    font-size: 0.8em;
     text-anchor: end;
     alignment-baseline: middle;
   }
 
   text.number-label {
-    font-size: 0.7em;
+    font-size: 0.8em;
     text-anchor: start;
     alignment-baseline: middle;
   }
@@ -82,10 +82,9 @@ line.income-marker {
 
 .controls {
   display: flex;
-  margin: 0 auto;
+  flex-direction: row;
   justify-content: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75em;
 
   .control-button {
     color: #000;
