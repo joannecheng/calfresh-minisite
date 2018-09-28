@@ -9,9 +9,9 @@
 
 (defn county-info-row [county-data row-name item-name]
   (let [item (get county-data item-name)]
-    (str "<div class=\"grid-item width-two-thirds\">"
+    (str "<div class=\"grid-item width-two-thirds\"><b>"
          row-name
-         "</div><div class=\"grid-item width-one-third end-row\">"
+         "</b></div><div class=\"grid-item width-one-third end-row\">"
          item
          "</div>")))
 

@@ -13,9 +13,10 @@ body {
 }
 
 .side-nav {
-  width: 15vw;
   position: fixed;
   top: 0;
+  width: 15vw;
+  z-index: 99999;
 
   .side-nav-list {
     paddding-left: 0;
@@ -30,7 +31,7 @@ body {
   }
 
   li {
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin: 0;
   }
 
@@ -181,7 +182,7 @@ body {
   height: 80vh;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 800px) {
   .side-nav {
     display: none;
   }
