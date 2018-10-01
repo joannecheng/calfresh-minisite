@@ -10,7 +10,7 @@
     color: #fefefe;
     position: relative;
     margin: 0.45em 0;
-    padding: 0.35em 49px;
+    padding: 0.3em 40px;
   }
 
   blockquote:before {
@@ -74,6 +74,31 @@
     margin-left: 4em;
     margin-right: 0;
   }
+}
 
-  // TODO: Mobile view
+
+@media only screen and (max-width: 1000px) {
+  #quote_map_container {
+
+    #quote_map {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      height: 40vh;
+      width: 100vw;
+    }
+
+    #quote_map_content, #quote_map_quotes {
+      margin-top: 40vh;
+      width: 100vw;
+      height: 67vh;
+
+      //box-sizing: content-box;
+      overflow-y: scroll;
+    }
+
+    .quote-map-section {
+      width: 90%;
+    }
+  }
 }
