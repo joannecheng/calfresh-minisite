@@ -11,6 +11,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
 (def hovered-state-id (atom nil))
+(def selected-county-name (atom "San Francisco"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll Actions
@@ -38,9 +39,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
-(defn update-quotes [county-name]
-  (quote-view/update-title county-name)
-  (quote-view/show-quotes county-name))
+(defn update-quotes []
+  (let [county-name @selected-county-name]
+    (quote-view/update-title county-name)
+    (quote-view/show-quotes county-name)))
 
 (defn set-county-hover [container state-id hover-bool]
   (-> container
@@ -78,7 +80,8 @@
       (.on "click", "california-county-fill",
            #(let [county-id (.-id (first (.-features %)))
                   county-name (.-name (.-properties (first (.-features %))))]
-                (update-quotes county-name))))
+              (swap! selected-county-name county-name)
+              (update-quotes))))
 
   (-> quote-map-container
       (.on "mousemove", "california-county-fill",
@@ -110,6 +113,7 @@
 (defn draw []
   (let [quote-map-container (draw-map)]
     ;;(scroll-handlers quote-map-container)
+    (update-quotes)
     (GET "./data/california-counties.json"
          :response-format :json
          :handler (partial draw-california quote-map-container))))
