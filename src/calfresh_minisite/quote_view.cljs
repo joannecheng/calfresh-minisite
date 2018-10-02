@@ -5,14 +5,16 @@
 ;;TODO USE HICCUP GODDAMMIT THIS IS SO BAD
 (defn update-title [county-name]
   (let [el (.getElementById js/document "quote_county_name")]
-    (set! (.-innerHTML el) (str "<h2>" county-name "</h2>"))))
+    (set! (.-innerHTML el) (str "<div class=\"large-text\"><strong>"
+                                county-name
+                                "</strong></div>"))))
 
 (defn county-info-row [county-data row-name item-name]
   (let [item (get county-data item-name)]
-    (str "<div class=\"grid-item width-two-thirds\"><b>"
+    (str "<div class=\"grid-item width-two-thirds county-data\">"
          row-name
-         "</b></div><div class=\"grid-item width-one-third end-row\">"
-         item
+         "</div><div class=\"grid-item width-one-third county-data end-row\">"
+         (str item "&nbsp;")
          "</div>")))
 
 (defn county-info [county-name]
@@ -23,14 +25,13 @@
                           :minimum-cost-living-family)
          (county-info-row county-data "Median Income" :median-income)
          (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate)
-         "</div>")))
+         "</div>"
+         )))
 
 (defn quote-html [county-quote]
   (str "<blockquote class=\"animated fadeInDown\">"
        county-quote
-       "</blockquote>"
-       ;;"<div class=\"profile-image\">Image here</div>"
-       ))
+       "</blockquote>"))
 
 (defn show-quotes [county-name]
   (let [county-quotes (get (get quotes/quotes county-name) :quotes)

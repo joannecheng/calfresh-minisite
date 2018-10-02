@@ -40,6 +40,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
 (defn update-quotes []
+  (println "update")
   (let [county-name @selected-county-name]
     (quote-view/update-title county-name)
     (quote-view/show-quotes county-name)))
@@ -80,7 +81,9 @@
       (.on "click", "california-county-fill",
            #(let [county-id (.-id (first (.-features %)))
                   county-name (.-name (.-properties (first (.-features %))))]
-              (swap! selected-county-name county-name)
+              (println county-name)
+              (reset! selected-county-name county-name)
+              (println @selected-county-name)
               (update-quotes))))
 
   (-> quote-map-container

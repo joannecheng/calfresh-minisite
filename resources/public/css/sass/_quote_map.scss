@@ -1,3 +1,5 @@
+@import "style-guide-4.0.4/_sass/main";
+
 #quote_map_container {
   background-color: #1a1a1a; //rgb(31,32,32);
   color: #fefefe;
@@ -5,6 +7,10 @@
   padding: 0;
 
   overflow-y: hidden;
+
+  #quote_county_name {
+    text-align: center;
+  }
 
   blockquote {
     color: #fefefe;
@@ -36,8 +42,14 @@
   }
 
   .county-info {
-    padding-top: 1.5rem;
     padding-bottom: 2rem;
+  }
+
+  .county-data {
+    border-bottom: 1px solid $color-grey-700;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
   }
 
   .profile-image {
