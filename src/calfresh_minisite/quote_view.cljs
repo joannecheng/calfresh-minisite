@@ -11,21 +11,21 @@
 
 (defn county-info-row [county-data row-name item-name]
   (let [item (get county-data item-name)]
-    (str "<div class=\"grid-item width-two-thirds county-data\">"
+    (str "<tr><td>"
          row-name
-         "</div><div class=\"grid-item width-one-third county-data end-row\">"
+         "</td><td>"
          (str item "&nbsp;")
-         "</div>")))
+         "</td></tr>")))
 
 (defn county-info [county-name]
   (let [county-data (get quotes/quotes county-name)]
-    (str "<div class=\"grid-box county-info\">"
+    (str "<table class=\"county-data\">"
          (county-info-row county-data "Population" :population)
          (county-info-row county-data "Min Cost of Living (2 Working Adults, 2 Children)"
                           :minimum-cost-living-family)
          (county-info-row county-data "Median Income" :median-income)
          (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate)
-         "</div>"
+         "</table>"
          )))
 
 (defn quote-html [county-quote]

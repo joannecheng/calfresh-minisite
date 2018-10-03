@@ -46,10 +46,15 @@
   }
 
   .county-data {
-    border-bottom: 1px solid $color-grey-700;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    td {
+      border: 1px solid #1a1a1a;
+      border-bottom: 1px solid $color-grey-700;
+    }
 
+    tr {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
   }
 
   .profile-image {
