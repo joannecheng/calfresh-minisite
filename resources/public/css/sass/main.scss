@@ -197,6 +197,10 @@ body {
     display: none;
   }
 
+  .header {
+    height: 100vh;
+  }
+
   .header .header-content h1 {
     font-size: 2.2rem;
     margin-bottom: 0.1em;
@@ -216,5 +220,10 @@ body {
   .article-container p {
     font-size: 1rem;
     line-height: 1.4rem;
+  }
+
+  .article-container .aside-notes {
+    margin: 1.5em 1.5em;
+    padding: 0.5em 1em 0.5em 1em;
   }
 }
