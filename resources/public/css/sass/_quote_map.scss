@@ -80,22 +80,22 @@
 
   .quote-map-section {
     height: 100vh;
-    width: 60%;
+    //width: 60%;
 
-    padding-top: 4rem;
-    padding-left: 16rem;
+//    padding-top: 4rem;
+//    padding-left: 16rem;
   }
 
-  .quote-map-content {
+  /*.quote-map-content {
     width: 100%;
     padding-right: 3rem;
-  }
+    padding-top: 4rem;
+  }*/
 }
 
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 900px) {
   #quote_map_container {
-
     #quote_map {
       position: absolute; // "fixed"
       top: 0px;
@@ -114,7 +114,7 @@
     }
 
     .quote-map-section {
-      width: 90%;
+      width: 100%;
     }
   }
 }
