@@ -57,13 +57,11 @@
                  (v/validate-ui-state new-state)
                  (col-vs-income/redraw new-state
                                        (utils/width-of col-vs-income)
-                                       col-vs-income)))
-    ))
+                                       col-vs-income)))))
 
 (defn ^:export main []
-    (if (some? (.getElementById js/document "quote_map"))
-      (quote-map/draw)
-      (draw-index)))
+  (quote-map/draw)
+  (draw-index))
 
 (defn on-js-reload []
   ;; remove all event handlers created in here
