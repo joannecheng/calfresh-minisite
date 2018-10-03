@@ -10,6 +10,7 @@
                  [org.clojure/clojurescript "1.10.339"]
                  [org.clojure/core.async  "0.4.474"]
                  [hiccup "1.0.5"]
+                 [hickory "0.7.1"]
 
                  [cljs-ajax "0.7.3"]
 

@@ -46,4 +46,3 @@
   []
   (spit "./resources/public/quote-map.html"
    (quote-map/render)))
-(render-quote-map)

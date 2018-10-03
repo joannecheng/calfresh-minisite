@@ -3,14 +3,15 @@
   (:require [cljsjs.mapbox]
             [cljsjs.ScrollMagic]
 
-            [ajax.core :refer [GET POST]]
+            [ajax.core :refer [GET]]
 
             [calfresh-minisite.quote-view :as quote-view]
-            [calfresh-minisite.utils :as utils]))
+            [calfresh-minisite.utils :as utils]
+            [calfresh-minisite.quotes :as quotes]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
-(def hovered-state-id (atom nil))
+(def hovered-state-id (atom 38))
 (def selected-county-name (atom "San Francisco"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -19,9 +20,10 @@
   (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                :zoom 2})))
 
-(defn san-fran [quote-map]
-  (.easeTo quote-map (clj->js {:center [-122.420679 37.772537]
-                               :zoom 12})))
+(defn ease-to-county [quote-map controller]
+  (let [center (get quotes/quotes @selected-county-name)]
+    (.easeTo quote-map (clj->js {:center center
+                                 :zoom 15}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Event Handling
@@ -35,7 +37,7 @@
 (defn scroll-handlers [quote-map]
   (let [controller (js/ScrollMagic.Controller.)]
     (scroll-action "title" (partial title-action quote-map) controller)
-    (scroll-action "section1" (partial san-fran quote-map) controller)))
+    (scroll-action "section1" (partial ease-to-county quote-map) controller)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
@@ -56,7 +58,6 @@
   ;; See https://www.mapbox.com/mapbox-gl-js/example/hover-styles/ for more
   ;; information on what's going on
   [quote-map-container resp]
-
   (-> quote-map-container
       (.addSource "counties", (clj->js {:type "geojson" :data resp})))
   (-> quote-map-container
@@ -69,38 +70,28 @@
                                                   ["boolean" ["feature-state" "hover"] false]
                                                   0.6 0]}})))
 
+  (set-county-hover quote-map-container
+                    @hovered-state-id true)
+
   (-> quote-map-container
       (.addLayer (clj->js {:id "california-counties"
                            :type "line"
                            :source "counties"
                            :paint {:line-color "#ccc"
                                    :line-width 1}})))
+  ;; TODO: TOOLTIPS FOR COUNTIES
 
   (-> quote-map-container
       (.on "click", "california-county-fill",
            #(let [county-id (.-id (first (.-features %)))
                   county-name (.-name (.-properties (first (.-features %))))]
-              (reset! selected-county-name county-name)
-              (update-quotes))))
-
-  (-> quote-map-container
-      (.on "mousemove", "california-county-fill",
-           #(let [county-id (.-id (first (.-features %)))
-                  county-name (.-name (.-properties (first (.-features %))))]
               (if (some? @hovered-state-id)
                 (set-county-hover quote-map-container
                                   @hovered-state-id false))
+              (reset! selected-county-name county-name)
+              (set-county-hover quote-map-container county-id true)
               (reset! hovered-state-id county-id)
-              (set-county-hover quote-map-container
-                                county-id true))))
-
-  (-> quote-map-container
-      (.on "mouseleave", "california-county-fill",
-           (fn []
-             (if (some? @hovered-state-id)
-               (set-county-hover quote-map-container
-                                 @hovered-state-id false))
-             (reset! hovered-state-id nil)))))
+              (update-quotes)))))
 
 (defn draw-map []
   (js/mapboxgl.Map.
