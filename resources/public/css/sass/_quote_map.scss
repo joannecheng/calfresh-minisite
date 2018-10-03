@@ -25,9 +25,9 @@
     display: block;
     padding-left: 10px;
     content: "\201C";
-    font-size: 80px;
+    font-size: 60px;
     position: absolute;
-    left: -20px;
+    left: -2px;
     top: -20px;
     color: $color-grey-100;
   }
@@ -36,7 +36,7 @@
     color: $color-grey-100;
     font-size: 14px;
     display: block;
-    margin-top: 5px;
+    margin-top: 7px;
   }
 
   blockquote cite:before {
@@ -74,13 +74,14 @@
     width: 40vw;
   }
 
-  .title {
-    text-align: center;
-  }
 
+  .quote-map-title {
+    padding: 1rem;
+  }
   .quote-map-section {
     height: 95vh;
     margin-top: 4rem;
+    padding: 1rem;
   }
 }
 
@@ -106,6 +107,10 @@
 
     .quote-map-section {
       width: 100%;
+    }
+
+    blockquote {
+      font-size: 1.1rem;
     }
   }
 }
