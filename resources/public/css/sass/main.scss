@@ -192,20 +192,26 @@ body {
   margin-top: 0;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 900px) {
   .side-nav {
     display: none;
   }
 
   .header .header-content h1 {
-    font-size: 3.5rem;
-
-    p {
-      font-size: 1rem;
-    }
+    font-size: 2.2rem;
   }
 
-  p {
+  .header .header-content h2 {
+    font-size: 1.7rem;
+  }
+
+  .header .header-content p, ul, li {
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+  }
+
+  .article-container p {
     font-size: 1rem;
+    line-height: 1.4rem;
   }
 }
