@@ -17,8 +17,9 @@
   blockquote {
     color: #fefefe;
     position: relative;
-    margin: 0.45em 0;
-    padding: 0.3em 40px;
+    margin: 0.45em 0 1em 0em;
+    padding: 0em 0 0 35px;
+    font-size: 1.1rem;
   }
 
   blockquote:before {
@@ -69,9 +70,9 @@
   #quote_map {
     position: absolute; // JS should change this to 'fixed'
     top: 0px;
-    left: 60vw;
+    left: 50vw;
     height: 100vh;
-    width: 40vw;
+    width: 50vw;
   }
 
 
