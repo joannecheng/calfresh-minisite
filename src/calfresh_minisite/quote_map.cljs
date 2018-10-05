@@ -13,31 +13,33 @@
 ;; State
 (def hovered-state-id (atom 38))
 (def selected-county-name (atom "San Francisco"))
+(def map-animation (atom nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Scroll Actions
+;; Map Panning Actions
 (defn title-action [quote-map]
   (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                :zoom 2})))
 
-(defn ease-to-county [quote-map controller]
-  (let [center (get quotes/quotes @selected-county-name)]
-    (.easeTo quote-map (clj->js {:center center
+(defn ease-to-county [quote-map]
+  (let [center (get (get quotes/quotes @selected-county-name) :center)]
+    (.easeTo quote-map (clj->js {:center (into-array center)
                                  :zoom 15}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Event Handling
-(defn scroll-action [element-id action controller]
-  (let [el-height (utils/height-of element-id)]
-    (-> (js/ScrollMagic.Scene.
-         #js {:triggerElement (str "#" element-id) :duration (- el-height 80)})
-        (.addTo controller)
-        (.on "start end" action))))
+;; Quote map scroll handling
+(defn make-quote-map-sticky []
+  (let [el (.getElementById js/document "quote_map")]
+    (println el)
+    (-> el
+        .-classList
+        (.add "sticky"))))
 
-(defn scroll-handlers [quote-map]
-  (let [controller (js/ScrollMagic.Controller.)]
-    (scroll-action "title" (partial title-action quote-map) controller)
-    (scroll-action "section1" (partial ease-to-county quote-map) controller)))
+(defn unstick-quote-map []
+  (let [el (.getElementById js/document "quote_map")]
+    (-> el
+        .-classList
+        (.remove "sticky"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
@@ -93,6 +95,22 @@
               (reset! hovered-state-id county-id)
               (update-quotes)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Scroll Event Handling
+(defn scroll-action [element-id action trigger controller]
+  (let [el-height (utils/height-of element-id)]
+    (-> (js/ScrollMagic.Scene.
+         #js {:triggerElement (str "#" element-id) :duration (- el-height 80)})
+        (.addTo controller)
+        (.on trigger action))))
+
+(defn scroll-handlers [quote-map]
+  (let [controller (js/ScrollMagic.Controller.)]
+    (scroll-action "quote_map_container" make-quote-map-sticky "start" controller)
+    (scroll-action "quote_map_container" unstick-quote-map "end" controller)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Main Drawing functions
 (defn draw-map []
   (js/mapboxgl.Map.
    #js {:container "quote_map"
@@ -103,8 +121,8 @@
 
 (defn draw []
   (let [quote-map-container (draw-map)]
-    ;;(scroll-handlers quote-map-container)
     (update-quotes)
+    (scroll-handlers quote-map-container)
     (-> quote-map-container
         (.on "load"
              (fn []

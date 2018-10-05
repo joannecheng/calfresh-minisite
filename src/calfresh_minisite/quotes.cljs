@@ -2,24 +2,39 @@
 
 (def quotes
   {"Placer" {:population "348,432"
-             :center [-120.722718 39.06203]}
+             :center [-120.722718 39.06203]
+             :quotes []}
 
-   "San Luis Obispo" {:population "269,637" :center [-120.447540 35.38522]},
-   "Contra Costa" {:quotes
-                   ["I need help with many basic day to today activities of daily living, because im disabled and have great difficulty getting things done"
-                    "I was fired. In December I borowed from my 401K to pay off credit card debit, which I did."],
-    :population "1,049,025"
-    :center [-121.951543 37.91947]},
+   "San Luis Obispo" {:population "269,637"
+                      :center [-120.447540 35.38522]
+                      :quotes []}
 
-   "Marin" {:quotes
-            ["I'm an unpaid intern working in Marin county for 6 months to complete my internship course credit for school"
-             "I'm a single mom, divorced from someone that was highly abusive-mentally and physically."],
+   "Contra Costa" {:quotes ["I need help with many basic day to today activities of daily living, because im disabled and have great difficulty getting things done"
+                            "I was fired. In December I borowed from my 401K to pay off credit card debit, which I did."],
+                   :population "1,049,025"
+                   :center [-121.951543 37.91947]}
+
+   "Marin" {:quotes ["I'm an unpaid intern working in Marin county for 6 months to complete my internship course credit for school"
+                     "I'm a single mom, divorced from someone that was highly abusive-mentally and physically."]
             :population "252,409"
             :center [-122.745974 38.05181]},
-   "Napa" {:population "136,484" :center [-122.325995 38.50735]},
-   "San Mateo" {:population "718,451" :center [-122.371542 37.41466]},
-   "Tuolumne" {:population "55,365" :center [-119.964708 38.02145]},
-   "Fresno" {:population "930,450" :center [-119.655019 36.761]},
+
+   "Napa" {:population "136,484"
+           :center [-122.325995 38.50735]
+           :quotes []},
+
+   "San Mateo" {:population "718,451"
+                :center [-122.371542 37.41466]
+                :quotes []},
+
+   "Tuolumne" {:population "55,365"
+               :center [-119.964708 38.02145]
+               :quotes []},
+
+   "Fresno" {:population "930,450"
+             :center [-119.655019 36.761]
+             :quotes []},
+
    "Sierra" {:population "3,240" :center [-120.521993 39.57692]},
    "El Dorado" {:population "181,058" :center [-120.534398 38.78553]},
    "Lassen" {:population "34,895" :center [-120.629931 40.72108]},
@@ -70,7 +85,9 @@
    "Colusa" {:population "21,419" :center [-122.237563 39.17773]},
    "Alpine" {:population "1,175" :center [-119.798999 38.61761]},
    "Humboldt" {:population "134,623" :center [-123.925818 40.70667]},
-   "Los Angeles" {:population "9,818,605" :center [-118.261862 34.19639]},
+   "Los Angeles" {:population "9,818,605"
+                  :center [-118.261862 34.19639]
+                  :quotes ["test test"]},
    "Sonoma" {:population "483,878" :center [-122.945194 38.53257]},
    "Mariposa" {:population "18,251" :center [-119.912860 37.57003]},
    "Nevada" {:population "98,764" :center [-120.773446 39.29519]},

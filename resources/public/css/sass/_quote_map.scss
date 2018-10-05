@@ -17,7 +17,7 @@
   blockquote {
     color: #fefefe;
     position: relative;
-    margin: 0.45em 0 1em 0em;
+    margin: 0.45em 0 1em 0.5em;
     padding: 0em 0 0 35px;
     font-size: 1.1rem;
   }
@@ -49,14 +49,14 @@
   }
 
   .county-data {
+    tbody {
+      padding: 0.5rem;
+      margin: 0.25rem;
+    }
+
     td {
       border: 1px solid #1a1a1a;
       border-bottom: 1px solid $color-grey-700;
-    }
-
-    tr {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
     }
   }
 
@@ -75,14 +75,21 @@
     width: 50vw;
   }
 
+  #quote_map.sticky {
+    //position: -webkit-sticky;
+    //position: sticky;
+    position: fixed;
+    top: 0;
+  }
 
   .quote-map-title {
     padding: 1rem;
   }
+
   .quote-map-section {
     height: 95vh;
-    margin-top: 4rem;
-    padding: 1rem;
+    margin-top: 1rem;
+    padding: 1rem 0 1rem 0;
   }
 }
 
