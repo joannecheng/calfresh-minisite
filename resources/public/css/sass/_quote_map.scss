@@ -1,6 +1,7 @@
 @import "style-guide-4.0.4/_sass/main";
 
 #quote_map_container {
+  z-index: 9999;
   position: relative;
   background-color: #1a1a1a; //rgb(31,32,32);
   color: $color-grey-100;
@@ -9,10 +10,6 @@
 
   overflow-y: hidden;
   overflow-x: hidden;
-
-  #quote_county_name {
-    text-align: center;
-  }
 
   blockquote {
     color: #fefefe;
@@ -87,7 +84,7 @@
   }
 
   .quote-map-section {
-    height: 95vh;
+    height: 100%;
     margin-top: 1rem;
     padding: 1rem 0 1rem 0;
   }
@@ -104,17 +101,20 @@
       width: 100vw;
     }
 
-    #quote_map_content, #quote_map_quotes {
+    #quote_map_quotes {
       margin-top: 40vh;
-      width: 100vw;
-      height: 67vh;
+      width: 100%;
+      height: 100%;
 
-      //box-sizing: content-box;
-      //overflow-y: scroll;
+      box-sizing: content-box;
+      overflow-y: visible;
     }
 
     .quote-map-section {
       width: 100%;
+
+      box-sizing: content-box;
+      //overflow-y: auto;
     }
 
     blockquote {

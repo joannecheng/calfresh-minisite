@@ -12,11 +12,16 @@ body {
   font-color: #333;
 }
 
+// Alignment
+.text-center {
+  text-align: center;
+}
+
 .side-nav {
   position: fixed;
   top: 0;
   width: 15vw;
-  z-index: 99999;
+  z-index: 999;
 
   .side-nav-list {
     paddding-left: 0;

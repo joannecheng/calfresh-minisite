@@ -3,11 +3,10 @@
             [calfresh-minisite.quotes :as quotes]))
 
 ;;TODO USE HICCUP GODDAMMIT THIS IS SO BAD
-(defn update-title [county-name]
-  (let [el (.getElementById js/document "quote_county_name")]
-    (set! (.-innerHTML el) (str "<div class=\"large-text\"><strong>"
-                                county-name
-                                "</strong></div>"))))
+(defn title-contents [county-name]
+  (str "<div class=\"large-text text-center\"><strong>"
+       county-name
+       "</strong></div>"))
 
 (defn county-info-row [county-data row-name item-name]
   (let [item (get county-data item-name)]
@@ -17,7 +16,7 @@
          (str item "&nbsp;")
          "</td></tr>")))
 
-(defn county-info [county-name]
+(defn county-info-contents [county-name]
   (let [county-data (get quotes/quotes county-name)]
     (str "<table class=\"county-data\">"
          (county-info-row county-data "Population" :population)
@@ -33,12 +32,35 @@
        county-quote
        "</blockquote>"))
 
+(defn preloaded-quotes [county-name]
+  (let [county-quotes (get (get quotes/quotes county-name) :quotes)]
+    (str "<div class=\"grid-box\" data-county=\""
+         county-name
+         "\"/>"
+         "<div class=\"grid-item width-one-half end-row\">"
+         (title-contents county-name)
+         "</div>"
+         "<div class=\"grid-item width-one-half end-row\">"
+         (county-info-contents county-name)
+         (string/join " " (map quote-html county-quotes))
+         "</div></div>")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DOM updating functions
+
+(defn update-title [county-name]
+  (let [el (.getElementById js/document "quote_county_name")]
+    (set! (.-innerHTML el) (title-contents county-name))))
+
 (defn show-quotes [county-name]
   (let [county-quotes (get (get quotes/quotes county-name) :quotes)
         el (.getElementById js/document "quote_list")]
     (set! (.-innerHTML el) "")
 
     (if (> (count county-quotes) 0)
-      (set! (.-innerHTML el) (str (county-info county-name)
+      (set! (.-innerHTML el) (str (county-info-contents county-name)
                                   (string/join " " (map quote-html county-quotes)))))))
 
+(defn preload-quotes [county-names]
+  (let [el (.getElementById js/document "preloaded_quotes")]
+    (set! (.-innerHTML el) (string/join "" (map preloaded-quotes county-names)))))

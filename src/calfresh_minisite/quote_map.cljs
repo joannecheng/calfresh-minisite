@@ -12,7 +12,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
 (def hovered-state-id (atom 38))
-(def selected-county-name (atom "San Francisco"))
+(def selected-county-name (atom "Los Angeles"))
 (def map-animation (atom nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -97,17 +97,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll Event Handling
-(defn scroll-action [element-id action trigger controller]
-  (let [el-height (utils/height-of element-id)]
-    (-> (js/ScrollMagic.Scene.
-         #js {:triggerElement (str "#" element-id) :duration (- el-height 80)})
-        (.addTo controller)
-        (.on trigger action))))
-
 (defn scroll-handlers [quote-map]
   (let [controller (js/ScrollMagic.Controller.)]
-    (scroll-action "quote_map_container" make-quote-map-sticky "start" controller)
-    (scroll-action "quote_map_container" unstick-quote-map "end" controller)))
+    (-> (js/ScrollMagic.Scene.
+         #js {:triggerElement "#quote_map_container"
+              :duration (- (utils/height-of "quote_map_container") 180)
+              :triggerHook 0})
+        (.addTo controller)
+        (.addIndicators)
+        (.setClassToggle "#quote_map" "sticky"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Main Drawing functions
@@ -121,6 +119,7 @@
 
 (defn draw []
   (let [quote-map-container (draw-map)]
+    (quote-view/preload-quotes ["San Francisco" "Alameda" "Fresno"])
     (update-quotes)
     (scroll-handlers quote-map-container)
     (-> quote-map-container
