@@ -36,10 +36,10 @@
     (str "<div class=\"grid-box county-info-box\" data-county=\""
          county-name
          "\"/>"
-         "<div class=\"grid-item shift-one-sixth width-one-half end-row\">"
+         "<div class=\"grid-item shift-one-third width-one-half end-row\">"
          (title-contents county-name)
          "</div>"
-         "<div class=\"grid-item shift-one-sixth width-one-half end-row\">"
+         "<div class=\"grid-item shift-one-third width-one-half end-row\">"
          (county-info-contents county-name)
          (string/join " " (map quote-html county-quotes))
          "</div></div>")))
