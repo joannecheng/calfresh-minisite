@@ -27,21 +27,6 @@
                                  :zoom 15}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Quote map scroll handling
-(defn make-quote-map-sticky []
-  (let [el (.getElementById js/document "quote_map")]
-    (println el)
-    (-> el
-        .-classList
-        (.add "sticky"))))
-
-(defn unstick-quote-map []
-  (let [el (.getElementById js/document "quote_map")]
-    (-> el
-        .-classList
-        (.remove "sticky"))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
 (defn update-quotes []
   (let [county-name @selected-county-name]
@@ -114,15 +99,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll Event Handling
-(defn scroll-handlers [quote-map]
-  (let [controller (js/ScrollMagic.Controller.)]
-    (-> (js/ScrollMagic.Scene.
-         #js {:triggerElement "#quote_map_container"
-              :duration (- (utils/height-of "quote_map_container") 180)
-              :triggerHook 0})
-        (.addTo controller)
-        (.addIndicators)
-        (.setClassToggle "#quote_map" "sticky"))))
+(defn scroll-handlers
+  ;; TODO: Should zoom to county
+  [quote-map])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Main Drawing functions
@@ -138,10 +117,11 @@
   (let [quote-map-container (draw-map)]
     (quote-view/preload-quotes ["San Francisco" "Alameda" "Fresno"])
     (update-quotes)
-    (scroll-handlers quote-map-container)
+    ;;(scroll-handlers quote-map-container)
     (-> quote-map-container
         (.on "load"
              (fn []
                (GET "./data/california-counties.json"
                     :response-format :json
-                    :handler (partial draw-california quote-map-container)))))))
+                    :handler (partial draw-california quote-map-container)))))
+  ))

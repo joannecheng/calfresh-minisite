@@ -2,7 +2,6 @@
   (:require [clojure.string :as string]
             [calfresh-minisite.quotes :as quotes]))
 
-;;TODO USE HICCUP GODDAMMIT THIS IS SO BAD
 (defn title-contents [county-name]
   (str "<div class=\"large-text text-center\"><strong>"
        county-name
@@ -34,13 +33,13 @@
 
 (defn preloaded-quotes [county-name]
   (let [county-quotes (get (get quotes/quotes county-name) :quotes)]
-    (str "<div class=\"grid-box\" data-county=\""
+    (str "<div class=\"grid-box county-info-box\" data-county=\""
          county-name
          "\"/>"
-         "<div class=\"grid-item width-one-half end-row\">"
+         "<div class=\"grid-item shift-one-sixth width-one-half end-row\">"
          (title-contents county-name)
          "</div>"
-         "<div class=\"grid-item width-one-half end-row\">"
+         "<div class=\"grid-item shift-one-sixth width-one-half end-row\">"
          (county-info-contents county-name)
          (string/join " " (map quote-html county-quotes))
          "</div></div>")))

@@ -1,15 +1,13 @@
 @import "style-guide-4.0.4/_sass/main";
 
 #quote_map_container {
-  z-index: 9999;
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  z-index: 99999;
   background-color: #1a1a1a; //rgb(31,32,32);
   color: $color-grey-100;
   margin: 0;
   padding: 0;
-
-  overflow-y: hidden;
-  overflow-x: hidden;
 
   blockquote {
     color: #fefefe;
@@ -41,8 +39,8 @@
     content: "\2014 \2009";
   }
 
-  .county-info {
-    padding-bottom: 2rem;
+  .county-info-box {
+    height: 100vh;
   }
 
   .county-data {
@@ -57,25 +55,11 @@
     }
   }
 
-  .profile-image {
-    margin-top: 1rem;
-    width: 150px;
-    height: 150px;
-    background: #666;
-  }
-
   #quote_map {
-    position: absolute; // JS should change this to 'fixed'
-    top: 0px;
-    left: 50vw;
     height: 100vh;
     width: 50vw;
-  }
-
-  #quote_map.sticky {
-    //position: -webkit-sticky;
-    //position: sticky;
-    position: fixed;
+    position: -webkit-sticky;
+    position: sticky; // JS should change this to 'fixed'
     top: 0;
   }
 
@@ -84,7 +68,6 @@
   }
 
   .quote-map-section {
-    height: 100%;
     margin-top: 1rem;
     padding: 1rem 0 1rem 0;
   }
@@ -116,7 +99,6 @@
 
     .quote-map-section {
       width: 100%;
-
       box-sizing: content-box;
       //overflow-y: auto;
     }
