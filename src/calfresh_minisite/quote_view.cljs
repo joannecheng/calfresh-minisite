@@ -2,6 +2,13 @@
   (:require [clojure.string :as string]
             [calfresh-minisite.quotes :as quotes]))
 
+
+(defn random-quotes [quote-list]
+  (case (count quote-list)
+    0 ""
+    1 quote-list
+    (take 2 (shuffle quote-list))))
+
 (defn title-contents [county-name]
   (str "<div class=\"large-text text-center\"><strong>"
        county-name
@@ -32,7 +39,7 @@
        "</blockquote>"))
 
 (defn preloaded-quotes [county-name]
-  (let [county-quotes (get (get quotes/quotes county-name) :quotes)]
+  (let [county-quotes (random-quotes (get (get quotes/quotes county-name) :quotes))]
     (str "<div class=\"grid-box county-info-box\" data-county=\""
          county-name
          "\"/>"
@@ -46,19 +53,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DOM updating functions
-
 (defn update-title [county-name]
   (let [el (.getElementById js/document "quote_county_name")]
     (set! (.-innerHTML el) (title-contents county-name))))
 
 (defn show-quotes [county-name]
-  (let [county-quotes (get (get quotes/quotes county-name) :quotes)
-        el (.getElementById js/document "quote_list")]
-    (set! (.-innerHTML el) "")
+  (let [county-quotes (random-quotes (get (get quotes/quotes county-name) :quotes))
+        el (.getElementById js/document "quote_list")
+        county-info (county-info-contents county-name)]
 
-    (if (> (count county-quotes) 0)
-      (set! (.-innerHTML el) (str (county-info-contents county-name)
-                                  (string/join " " (map quote-html county-quotes)))))))
+    (set! (.-innerHTML el) (str county-info
+                                (string/join " " (map quote-html (random-quotes county-quotes)))))
+      ))
 
 (defn preload-quotes [county-names]
   (let [el (.getElementById js/document "preloaded_quotes")]

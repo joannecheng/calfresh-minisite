@@ -9,11 +9,11 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.339"]
                  [org.clojure/core.async  "0.4.474"]
+                 [org.clojure/data.csv "0.1.4"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
 
                  [cljs-ajax "0.7.3"]
-
                  [cljsjs/d3 "4.12.0-0"]
                  [cljsjs/mapbox "0.46.0-0"]]
 

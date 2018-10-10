@@ -14,10 +14,11 @@
   (str "translate(" x "," y ")"))
 
 (defn housing-cost-for-area [area-name data-row]
-  (let [rent (->> col-data/rents-by-county
-                  (filter #(= (second %) area-name))
-                  first)]
-    (merge data-row { "Housing" (* (first rent) 12)})))
+  ;;(let [rent (->> col-data/rents-by-county
+  ;;                (filter #(= (second %) area-name))
+  ;;                first)]
+  ;;  (merge data-row { "Housing" (* (first rent) 12)}))
+  )
 
 (defn create-svg [width]
   (-> js/d3

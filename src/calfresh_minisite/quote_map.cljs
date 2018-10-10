@@ -12,7 +12,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
 (def selected-county-id (atom 38))
-(def selected-county-name (atom "Los Angeles"))
+(def selected-county-name (atom "Monterey"))
 (def map-animation (atom nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
