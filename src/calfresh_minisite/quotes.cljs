@@ -148,7 +148,7 @@
               :poverty-rate-increase "2.4"},
              "San Francisco"
              {:population "805,235",
-              :center [-123.032229 37.72723],
+              :center  [-122.4194 37.72723],
               :quotes
               [ "Currently, I am looking for a job near my apartment but even with that money I would earn, I still have to pay rent, utilities, and still go to college next month."
                "I am a full time PhD student at UCSF, and I do receive a modest stipend that would be enough to live on if not for insane rent prices in San Francisco and a pile of debt. The past few months, after a string of unexpected expenses have caused my credit debt to build, I have found it hard to make ends meet and I haven't been able to save any money to pay my taxes. This has left me very vulnerable and has caused a great deal of stress. Beyond this, I am not allowed to seek outside employment while I am enrolled at UCSF, and I am expected to spend 40-60 hours a week conducting research in a lab."

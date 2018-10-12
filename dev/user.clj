@@ -41,8 +41,3 @@
   "Launch a ClojureScript REPL that is connected to your build and host environment."
   []
   (f/cljs-repl))
-
-(defn render-quote-map
-  []
-  (spit "./resources/public/quote-map.html"
-   (quote-map/render)))
