@@ -1,29 +1,38 @@
+$light-blue: #a6cee3;
+$dark-blue: #1f78b4;
+$light-green: #b2df8a;
+$dark-green: #33a02c;
+$light-red: #fb9a99;
+$dark-red: #e31a1c;
+$outline: #555;
+//"#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"
+
 #viz1, #col_viz {
+  rect {
+    stroke: $outline;
+    stroke-width: 0.75px;
+    outline-offset: -0.5px;
+  }
+
   rect.housing {
-    fill: #c7e9b4;
+    fill: $dark-blue;
   }
 
   rect.medical {
-    fill: #7fcdbb;
+    fill: $light-blue;
   }
 
   rect.transportation {
-    fill: #41b6c4;
+    fill: $light-green;
   }
 
   rect.child-care {
     //"#1d91c0","#225ea8","#253494","#081d58"
-    fill: #1d91c0;
+    fill: $dark-green;
   }
 
   rect.food {
-    //fill: 0x8b0000
-    fill: #e31a1c;
-    fill-opacity: 0.3;
-    outline-color: #e31a1c;
-    outline-width: 2.5px;
-    outline-style: dashed;
-    outline-offset: -2.5px;
+    fill: $light-red;
   }
 
   .limit-line {
