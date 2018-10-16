@@ -248,13 +248,13 @@
     (draw-marker lines-svg filtered-counties lscale "col-marker")
     (draw-label lines-svg filtered-counties)))
 
-(defn clear []
+(defn clear [element-id]
   (-> js/d3
-      (.selectAll "svg")
+      (.selectAll (str "#" element-id " svg"))
       .remove))
 
 (defn redraw [ui-state width element-id]
-  (clear)
+  (clear element-id)
   (draw ui-state width element-id))
 
 (defn set-click-handlers [ui-state]

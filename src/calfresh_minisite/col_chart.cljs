@@ -1,18 +1,15 @@
 (ns calfresh-minisite.col-chart
   (:require [cljsjs.d3]
             [clojure.string :as string]
-            [calfresh-minisite.col-data :as col-data]))
+            [calfresh-minisite.col-data :as col-data]
+            [calfresh-minisite.utils :as utils]))
 
 (def height 300)
-(def container-id "col_viz")
 (def top-margin 15)
 (def bar-position 55)
 (def categories ["Housing" "Medical" "Transportation" "Child Care"])
 
 ;; General helpers
-(defn translate-str [x y]
-  (str "translate(" x "," y ")"))
-
 (defn housing-cost-for-area [area-name data-row]
   ;;(let [rent (->> col-data/rents-by-county
   ;;                (filter #(= (second %) area-name))
@@ -20,7 +17,7 @@
   ;;  (merge data-row { "Housing" (* (first rent) 12)}))
   )
 
-(defn create-svg [width]
+(defn create-svg [container-id width]
   (-> js/d3
    (.select (str "#" container-id))
    (.append "svg")
@@ -51,38 +48,38 @@
    (reduce +)))
 
 (defn draw-stack [svg scale data-row offset label]
-  (let [bar-height 15
-        top-offset (+ offset top-margin)
-        segments-svg (-> svg
-                         (.append "g")
-                         (.classed "segments" true)
-                         (.classed "stacked-bar" true)
-                         (.attr "transform"
-                                (translate-str bar-position top-offset)))
+  (let [bar-height        15
+        top-offset        (+ offset top-margin)
+        segments-svg      (-> svg
+                              (.append "g")
+                              (.classed "segments" true)
+                              (.classed "stacked-bar" true)
+                              (.attr "transform"
+                                     (utils/translate-str bar-position top-offset)))
         segment-generator (draw-segment segments-svg scale bar-height data-row)]
 
     (segment-generator "Housing")
     (-> (segment-generator "Medical")
         (.attr
          "transform"
-         (translate-str (scale (stack-length (take 1 categories) data-row)) 0)))
+         (utils/translate-str (scale (stack-length (take 1 categories) data-row)) 0)))
 
     (-> (segment-generator "Transportation")
         (.attr
          "transform"
-         (translate-str
+         (utils/translate-str
           (scale (stack-length (take 2 categories) data-row)) 0)))
 
     (-> (segment-generator "Child Care")
         (.attr
          "transform"
-         (translate-str
+         (utils/translate-str
           (scale (stack-length (take 3 categories) data-row)) 0)))
 
     (-> (segment-generator "Food")
         (.attr
          "transform"
-         (translate-str
+         (utils/translate-str
           (scale (stack-length categories data-row)) 0)))
 
     (-> segments-svg
@@ -94,33 +91,57 @@
         (.attr "class" "label")
         (.append "xhtml:div")
         (.attr "xmlns" "http://www.w3.org/1999/xhtml")
-        (.text label))
+        (.text label))))
+
+(defn draw-legend [svg width]
+  (let [labels #js ["Housing" "Medical" "Transportation" "Child Care" "Food"]
+        box-size 15
+        position (utils/translate-str (- width 20) top-margin)
+        legend-container (-> svg (.append "g")
+                             (.classed "legend" true)
+                             (.attr "transform" position))]
+    (-> legend-container
+        (.selectAll "rect")
+        (.data labels)
+        (.enter)
+        (.append "rect")
+        (utils/attrs {:width box-size
+                      :height box-size
+                      :x 0
+                      :y (fn [_ i] (* i 25))
+                      :class #(string/replace (string/lower-case %) " " "-")}))
+    (-> legend-container
+        (.selectAll "text")
+        (.data labels)
+        (.enter)
+        (.append "text")
+        (.text #(str %))
+        (utils/attrs {:x -5
+                      :y (fn [_ i] (+ (* i 25) (* box-size 0.75)))}))
     ))
 
 ;; Main draw functions
-(defn clear []
+(defn clear [container-id]
   (-> js/d3
    (.selectAll (str "#" container-id " svg"))
    (.remove)))
 
-(defn draw [width]
-  (let [scale (bar-scale width)
-        svg (create-svg width)
+(defn draw [container-id width]
+  (let [scale       (bar-scale width)
+        svg         (create-svg container-id width)
         bar-spacing 45]
 
-    (draw-stack svg scale (nth col-data/col 1) 15 "All CA")
-    (draw-stack svg
-                scale
-                (housing-cost-for-area "San Francisco, CA HUD Metro FMR Area" (nth col-data/col 1))
-                (+ bar-spacing 15)
-                "SF Area")
+    (draw-stack svg scale (first col-data/col) 15 "All CA")
+    (draw-legend svg width)
+    ;; Draw for counties with many applicants
 
-    (draw-stack svg
-                scale
-                (housing-cost-for-area "San Jose-Sunnyvale-Santa Clara, CA HUD Metro FMR Area" (nth col-data/col 1))
-                (+ (* 2 bar-spacing) 15)
-                "San Jose")))
+    ;;(draw-stack svg
+    ;;            scale
+    ;;            (housing-cost-for-area "San Jose-Sunnyvale-Santa Clara, CA HUD Metro FMR Area" (nth col-data/col 1))
+    ;;            (+ (* 2 bar-spacing) 15)
+    ;;            "San Jose")
+    ))
 
-(defn redraw [width]
-  (clear)
-  (draw width))
+(defn redraw [container-id width]
+  (clear container-id)
+  (draw container-id width))

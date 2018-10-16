@@ -42,12 +42,14 @@
 ;; Main Functions
 ;; The function that calls all the draw functions
 (defn draw-index []
-  (let [col-vs-income "col_vs_income"]
+  (let [col-vs-income "col_vs_income"
+        col-viz "col_viz"]
     (add-side-nav-handlers)
-    (col-chart/redraw (utils/width-of "col_viz"))
+
+    (col-chart/redraw col-viz (utils/width-of col-viz))
+
     (create-resize-handler col-vs-income)
     (col-vs-income/set-click-handlers ui-state)
-
     (col-vs-income/redraw @ui-state
                           (utils/width-of col-vs-income)
                           col-vs-income)
