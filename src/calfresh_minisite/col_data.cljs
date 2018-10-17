@@ -14,6 +14,12 @@
    {"Type" "2A 2 C","Food" 10487,"Child Care" 14182,"Medical" 6725,"Housing" 18827,"Transportation" 10235,"Other" 6512,"Required annual income after taxes" 66968,"Annual taxes" 12994,"Required annual income before taxes" 79962}
    {"Type" "2A 3C","Food" 12773,"Child Care" 19943,"Medical" 6389,"Housing" 26089,"Transportation" 10196,"Other" 6041,"Required annual income after taxes" 81429,"Annual taxes" 16356,"Required annual income before taxes" 97785}])
 
+(def col-humbolt
+  [
+   {"Type" "1 Working Adult, 1 Child","Food" 5245,"Child Care" 8260,"Medical" 6828,"Housing" 12312,"Transportation" 7975,"Other" 4533,"Required annual income after taxes" 45153,"Annual taxes" 8581,"Required annual income before taxes" 53734}
+   {"Type" "1 Working Adult, 2 Children","Food" 7893,"Child Care" 13911,"Medical" 6547,"Housing" 12312,"Transportation" 8373,"Other" 4999,"Required annual income after taxes" 54035,"Annual taxes" 10652,"Required annual income before taxes" 64686}
+   {"Type" "2A 3C","Food" 12773,"Child Care" 19943,"Medical" 6389,"Housing" 26089,"Transportation" 10196,"Other" 6041,"Required annual income after taxes" 81429,"Annual taxes" 16356,"Required annual income before taxes" 97785}])
+
 ;; Source: wikipedia
 (def income-data
   [["Alameda" 36439 73775 90822]

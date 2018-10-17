@@ -117,8 +117,12 @@
         (.append "text")
         (.text #(str %))
         (utils/attrs {:x -5
-                      :y (fn [_ i] (+ (* i 25) (* box-size 0.75)))}))
-    ))
+                      :y (fn [_ i] (+ (* i 25) (* box-size 0.75)))}))))
+
+(defn draw-title [container-id category]
+  (-> js/d3
+      (.select (str "#" container-id " h3"))
+      (.text (str "Cost of Living Breakdown, " category))))
 
 ;; Main draw functions
 (defn clear [container-id]
@@ -126,12 +130,27 @@
    (.selectAll (str "#" container-id " svg"))
    (.remove)))
 
+(defn draw-humbolt [container-id width]
+  (clear container-id)
+  (let [scale       (bar-scale width)
+        svg         (create-svg container-id width)
+        bar-spacing 75]
+    (draw-title container-id "Humbolt County")
+
+    (draw-stack svg scale (nth col-data/col 1) 0 "1 Working Adult, 1 Child")
+    (draw-stack svg scale (nth col-data/col 2) bar-spacing "1 Working Adult, 2 Children")
+    (draw-stack svg scale (nth col-data/col 10) (* 2 bar-spacing) "2 Working Adults, 2 Children")
+    (draw-legend svg width)))
+
 (defn draw [container-id width]
   (let [scale       (bar-scale width)
         svg         (create-svg container-id width)
-        bar-spacing 45]
+        bar-spacing 75]
 
-    (draw-stack svg scale (first col-data/col) 15 "All CA")
+    (draw-title container-id "All California")
+    (draw-stack svg scale (nth col-data/col 1) 0 "1 Working Adult, 1 Child")
+    (draw-stack svg scale (nth col-data/col 2) bar-spacing "1 Working Adult, 2 Children")
+    (draw-stack svg scale (nth col-data/col 10) (* 2 bar-spacing) "2 Working Adults, 2 Children")
     (draw-legend svg width)
     ;; Draw for counties with many applicants
 

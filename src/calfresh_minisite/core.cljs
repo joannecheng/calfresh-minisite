@@ -27,10 +27,16 @@
       (.setClassToggle (str "#" element-id "_nav") "active")
       (.addTo controller))))
 
-(defn add-side-nav-handlers []
-  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "stigma" "cta"]
-        controller (js/ScrollMagic.Controller.)]
+(defn add-side-nav-handlers [controller]
+  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "stigma" "cta"]]
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
+
+(defn add-col-handler [controller container-id width]
+  (-> (js/ScrollMagic.Scene.
+       #js {:triggerElement "#col_viz_humbolt" :duration 400})
+      (.on "enter" (partial col-chart/draw-humbolt container-id width))
+      (.addIndicators)
+      (.addTo controller)))
 
 ;; Drawing visualizations
 (defn redraw-chart [draw-function element-id] (draw-function @ui-state (utils/width-of element-id) element-id)) (defn create-resize-handler [element-id]
@@ -43,10 +49,13 @@
 ;; The function that calls all the draw functions
 (defn draw-index []
   (let [col-vs-income "col_vs_income"
-        col-viz "col_viz"]
-    (add-side-nav-handlers)
+        col-viz       "col_viz"
+        col-viz-width (utils/width-of col-viz)
+        controller    (js/ScrollMagic.Controller.)]
+    (add-side-nav-handlers controller)
+    (add-col-handler controller col-viz col-viz-width)
 
-    (col-chart/redraw col-viz (utils/width-of col-viz))
+    (col-chart/redraw col-viz col-viz-width)
 
     (create-resize-handler col-vs-income)
     (col-vs-income/set-click-handlers ui-state)
