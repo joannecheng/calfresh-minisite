@@ -53,7 +53,7 @@
         col-viz-width (utils/width-of col-viz)
         controller    (js/ScrollMagic.Controller.)]
     (add-side-nav-handlers controller)
-    (add-col-handler controller col-viz col-viz-width)
+;;    (add-col-handler controller col-viz col-viz-width)
 
     (col-chart/redraw col-viz col-viz-width)
 
