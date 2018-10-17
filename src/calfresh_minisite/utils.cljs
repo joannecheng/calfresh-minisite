@@ -1,4 +1,5 @@
-(ns calfresh-minisite.utils)
+(ns calfresh-minisite.utils
+  (:require [cljsjs.d3 :as d3]))
 
 (defn height-of [element-id]
   (let [el (.getElementById js/document element-id)]
@@ -18,3 +19,7 @@
 
 (defn translate-str [x y]
   (str "translate(" x "," y ")"))
+
+(defn format-money [num]
+  (let [formatter (.format js/d3 "($,.0f")]
+    (formatter num)))

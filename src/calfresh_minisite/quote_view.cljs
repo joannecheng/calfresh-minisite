@@ -1,6 +1,7 @@
 (ns calfresh-minisite.quote-view
   (:require [clojure.string :as string]
-            [calfresh-minisite.quotes :as quotes]))
+            [calfresh-minisite.quotes :as quotes]
+            [calfresh-minisite.utils :as utils]))
 
 
 (defn random-quotes [quote-list]
@@ -14,22 +15,22 @@
        county-name
        "</strong></div>"))
 
-(defn county-info-row [county-data row-name item-name]
+(defn county-info-row [county-data row-name item-name formatter]
   (let [item (get county-data item-name)]
     (str "<tr><td>"
          row-name
          "</td><td>"
-         (str item "&nbsp;")
+         (str (formatter item) "&nbsp;")
          "</td></tr>")))
 
 (defn county-info-contents [county-name]
   (let [county-data (get quotes/quotes county-name)]
     (str "<table class=\"county-data\">"
-         (county-info-row county-data "Population" :population)
+         (county-info-row county-data "Population" :population str)
          (county-info-row county-data "Min Cost of Living (2 Working Adults, 2 Children)"
-                          :minimum-cost-living-family)
-         (county-info-row county-data "Median Income" :median-income)
-         (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate)
+                          :minimum-cost-living-family utils/format-money)
+         (county-info-row county-data "Median Income" :median-income utils/format-money)
+         (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate str)
          "</table>"
          )))
 
