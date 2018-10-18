@@ -23,7 +23,7 @@
          (str (formatter item) "&nbsp;")
          "</td></tr>")))
 
-(defn county-info-contents [county-name]
+(defn render-info-table [county-name]
   (let [county-data (get quotes/quotes county-name)]
     (str "<table class=\"county-data\">"
          (county-info-row county-data "Population" :population str)
@@ -31,8 +31,15 @@
                           :minimum-cost-living-family utils/format-money)
          (county-info-row county-data "Median Income" :median-income utils/format-money)
          (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate str)
-         "</table>"
-         )))
+         "</table>")))
+
+(defn blank-county-info []
+  )
+
+(defn county-info-contents [county-name]
+  (if (nil? county-name)
+    (blank-county-info)
+    (render-info-table county-name)))
 
 (defn quote-html [county-quote]
   (str "<blockquote class=\"animated fadeInDown\">"
@@ -64,8 +71,7 @@
         county-info (county-info-contents county-name)]
 
     (set! (.-innerHTML el) (str county-info
-                                (string/join " " (map quote-html (random-quotes county-quotes)))))
-      ))
+                                (string/join " " (map quote-html (random-quotes county-quotes)))))))
 
 (defn preload-quotes [county-names]
   (let [el (.getElementById js/document "preloaded_quotes")]

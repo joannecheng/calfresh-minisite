@@ -12,7 +12,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
 (def selected-county-id (atom 38))
-(def selected-county-name (atom "Monterey"))
+(def selected-county-name (atom nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
@@ -33,6 +33,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Map Panning Actions
 (defn title-action [quote-map]
+  (set-selected-county quote-map nil)
   (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                :zoom   2})))
 
