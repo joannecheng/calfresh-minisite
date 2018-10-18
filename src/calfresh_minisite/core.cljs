@@ -28,7 +28,7 @@
       (.addTo controller))))
 
 (defn add-side-nav-handlers [controller]
-  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "stigma" "cta"]]
+  (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "calfresh_results" "cta"]]
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
 (defn add-col-handler [controller container-id width]
