@@ -3,8 +3,8 @@
   )
 
 (defn render []
-  (println "render")
   (->
-   (js/$ "#rotating_quotes_1")
-   (.slick (clj->js {:setting-name "autoplay"})))
-  )
+   (js/$ ".rotating-quotes")
+   (.slick (clj->js {:setting-name "autoplay"
+                     :autoplay true
+                     :autoplaySpeed 4000}))))
