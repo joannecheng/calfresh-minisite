@@ -1,9 +1,9 @@
 (ns calfresh-minisite.core
-  (:require [calfresh-minisite.col-chart :as col-chart]
+  (:require ;;[calfresh-minisite.col-chart :as col-chart]
             [calfresh-minisite.col-vs-income :as col-vs-income]
             [calfresh-minisite.quote-map :as quote-map]
             [calfresh-minisite.utils :as utils]
-
+            [calfresh-minisite.rotating-quotes :as rq]
             [calfresh-minisite.ui-state-validators :as v]
 
             [cljsjs.ScrollMagic]))
@@ -31,12 +31,12 @@
   (let [element-ids ["making_ends_meet" "better_jobs" "disability_illness" "calfresh_results" "cta"]]
     (doseq [element-id element-ids] (side-nav-handler element-id controller))))
 
-(defn add-col-handler [controller container-id width]
-  (-> (js/ScrollMagic.Scene.
-       #js {:triggerElement "#col_viz_humbolt" :duration 400})
-      (.on "enter" (partial col-chart/draw-humbolt container-id width))
-      (.addIndicators)
-      (.addTo controller)))
+;;(defn add-col-handler [controller container-id width]
+;;  (-> (js/ScrollMagic.Scene.
+;;       #js {:triggerElement "#col_viz_humbolt" :duration 400})
+;;      (.on "enter" (partial col-chart/draw-humbolt container-id width))
+;;      (.addIndicators)
+;;      (.addTo controller)))
 
 ;; Drawing visualizations
 (defn redraw-chart [draw-function element-id] (draw-function @ui-state (utils/width-of element-id) element-id)) (defn create-resize-handler [element-id]
@@ -53,15 +53,15 @@
         col-viz-width (utils/width-of col-viz)
         controller    (js/ScrollMagic.Controller.)]
     (add-side-nav-handlers controller)
-;;    (add-col-handler controller col-viz col-viz-width)
-
-    (col-chart/redraw col-viz col-viz-width)
+    ;;(add-col-handler controller col-viz col-viz-width)
+    ;;(col-chart/redraw col-viz col-viz-width)
 
     (create-resize-handler col-vs-income)
     (col-vs-income/set-click-handlers ui-state)
     (col-vs-income/redraw @ui-state
                           (utils/width-of col-vs-income)
                           col-vs-income)
+    (rq/render)
 
     (add-watch ui-state :redraw
                (fn [_key _atom old-state new-state]

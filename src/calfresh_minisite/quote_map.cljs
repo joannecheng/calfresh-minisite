@@ -51,16 +51,16 @@
        clj->js
        (js/ScrollMagic.Scene.)
        (.on "enter" (partial title-action quote-map-container))
-       (.addIndicators)
+       ;;(.addIndicators)
        (.addTo controller)))
 
 (defn scroll-handler-for-preloaded-county
   [quote-map-container controller county-name county-id]
-  (->  {:triggerElement (str "[data-county=\"" county-name "\"]")}
+  (->  {:triggerElement (str "[data-county=\"" county-name "\"]") :duration 500}
        clj->js
        (js/ScrollMagic.Scene.)
-       (.on "enter" (partial ease-to-county quote-map-container county-name county-id))
-       (.addIndicators)
+       (.on "enter end" (partial ease-to-county quote-map-container county-name county-id))
+       ;;(.addIndicators)
        (.addTo controller)))
 
 (defn scroll-handlers

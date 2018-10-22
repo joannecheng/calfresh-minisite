@@ -44,7 +44,6 @@ body {
   font-style: italics;
 }
 
-
 // Side Nav Only
 .side-nav {
   position: fixed;
@@ -258,4 +257,14 @@ body {
     margin: 1.5em 1.5em;
     padding: 0.5em 1em 0.5em 1em;
   }
+}
+
+.slick-arrow {
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+
+
+.slick-prev:before, .slick-next:before {
+  color: #888 !important;
 }
