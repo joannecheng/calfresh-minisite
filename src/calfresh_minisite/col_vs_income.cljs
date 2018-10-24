@@ -204,9 +204,22 @@
     (set-active-control num-children-controls (name (get ui-state :number-children)))
     (set-active-control num-adults-controls (name (get ui-state :number-adults)))))
 
+(defn show-counties-controls [ui-state]
+  (let [show-counties-controls (.select js/d3 "#show_counties_controls")
+        show-counties-state (get ui-state :show-counties)]
+    (clear-controls show-counties-controls)
+    (set-active-control show-counties-controls (name show-counties-state))))
+
 (defn interaction-controls [ui-state]
   (income-controls ui-state)
-  (family-type-controls ui-state))
+  (family-type-controls ui-state)
+  (show-counties-controls ui-state))
+
+(defn counties-to-show [ui-state col-counties]
+  (let [show-counties (get ui-state :show-counties)]
+    (if (= show-counties :show)
+      col-counties
+      (filter-negative-counties col-counties))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Public Drawing Functions
@@ -220,7 +233,7 @@
                           (map vector counties)
                           (sort-by #(last (last %))))
 
-        filtered-counties (filter-negative-counties col-counties)
+        filtered-counties (counties-to-show ui-state col-counties)
         lmargin 110
         rmargin 15
         tmargin 23
@@ -261,14 +274,13 @@
       (.on "click" #(this-as t
                       (swap!
                        ui-state
-                       assoc ui-state-item (keyword (.-name (.-dataset t)))))))
-  )
+                       assoc ui-state-item (keyword (.-name (.-dataset t))))))))
 
 (defn set-click-handlers [ui-state]
   (set-click-handlers-for-attribute ui-state "#income_controls" :income-view)
   (set-click-handlers-for-attribute ui-state "#num_adults_controls" :number-adults)
   (set-click-handlers-for-attribute ui-state "#num_children_controls" :number-children)
-  )
+  (set-click-handlers-for-attribute ui-state "#show_counties_controls" :show-counties))
 
 (defn unset-click-handlers []
   (-> (.selectAll js/d3 "#income_controls a")

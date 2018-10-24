@@ -16,6 +16,7 @@
          :income-view :median ;; median, lower-quartile
          :number-children :two_children
          :number-adults :one_adult
+         :show-counties :hide
          :current-section nil
          }))
 
