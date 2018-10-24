@@ -27,7 +27,7 @@
 (defn line-scale [width]
   (-> js/d3
       (.scaleLinear)
-      (.domain #js [0 93854])
+      (.domain #js [0 150000])
       (.range #js [0 width])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -155,7 +155,7 @@
                            (.append "g")
                            (.classed "grid-lines" true)
                            (.attr "transform" (utils/translate-str lmargin -7)))
-        grid-vals #js [20000 30000 40000 50000 60000 70000 80000 90000 100000]]
+        grid-vals #js [20000 30000 40000 50000 60000 70000 80000 90000 100000 110000 120000 130000 140000]]
     (-> grid-container
         (.selectAll "grid-line")
         (.data grid-vals)
@@ -188,8 +188,7 @@
 (defn set-active-control [el active-state-name]
   (-> el
       (.select (str "[data-name='" active-state-name "']"))
-      (.classed "active" true))
-  )
+      (.classed "active" true)))
 
 (defn income-controls [ui-state]
   (let [income-controls (.select js/d3 "#income_controls")]
@@ -257,12 +256,19 @@
   (clear element-id)
   (draw ui-state width element-id))
 
-(defn set-click-handlers [ui-state]
-  (-> (.selectAll js/d3 "#income_controls a")
+(defn set-click-handlers-for-attribute [ui-state element-id ui-state-item]
+  (-> (.selectAll js/d3 (str element-id " a"))
       (.on "click" #(this-as t
                       (swap!
                        ui-state
-                       assoc :income-view (keyword (.-name (.-dataset t))))))))
+                       assoc ui-state-item (keyword (.-name (.-dataset t)))))))
+  )
+
+(defn set-click-handlers [ui-state]
+  (set-click-handlers-for-attribute ui-state "#income_controls" :income-view)
+  (set-click-handlers-for-attribute ui-state "#num_adults_controls" :number-adults)
+  (set-click-handlers-for-attribute ui-state "#num_children_controls" :number-children)
+  )
 
 (defn unset-click-handlers []
   (-> (.selectAll js/d3 "#income_controls a")

@@ -14,7 +14,7 @@
          ;; visualization
          ;; options: negative, sf-counties, la-counties
          :income-view :median ;; median, lower-quartile
-         :number-children :one_child
+         :number-children :two_children
          :number-adults :one_adult
          :current-section nil
          }))
