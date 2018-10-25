@@ -1,7 +1,7 @@
 (ns calfresh-minisite.rotating-quotes
   (:require [cljsjs.slick :as slick]))
 
-(defn get-pause-status [pause-button]
+(defn get-new-pause-status [pause-button]
   (let [current-pause-status (.data pause-button "status")]
     (if (= current-pause-status "slickPlay")
       "slickPause"
@@ -13,10 +13,10 @@
     (.removeClass pause-button "playing")))
 
 (defn set-pause-status [pause-button quote-list]
-  (let [pause-status (get-pause-status pause-button)]
+  (let [pause-status (get-new-pause-status pause-button)]
     (.data pause-button "status" pause-status) ;; set data attribute
     (.slick quote-list pause-status) ;; set slick element
-    (set-icon pause-button pause-status))) ;; set text of button
+    (set-icon pause-button pause-status))) ;; set icon
 
 (defn set-pause-button [rotating-quote-el]
   (let [pause-button (.find (js/$ rotating-quote-el) "a.pause-button")
