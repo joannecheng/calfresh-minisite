@@ -23,7 +23,6 @@ $pause-button-color: #444;
   border-width: ($pause-button-size/2) 0 ($pause-button-size/2) $pause-button-size;
 
   &.playing {
-    //border-color: $pause-button-color;
     border-style: double;
     border-width: 0px 0px 0px ($pause-button-size/2 + 10);
   }
