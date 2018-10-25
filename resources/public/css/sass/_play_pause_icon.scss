@@ -1,0 +1,35 @@
+/*****************************************
+Play/Pause icons
+*****************************************/
+
+$pause-button-size: 16px;
+$pause-button-color: #444;
+
+.pause-button {
+  top: -30px;
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+  width: 0;
+  height: $pause-button-size;
+
+  border-color: transparent transparent transparent $pause-button-color;
+  cursor: pointer;
+
+  transition: 100ms all ease;
+  will-change: border-width;
+
+  border-style: solid;
+  border-width: ($pause-button-size/2) 0 ($pause-button-size/2) $pause-button-size;
+
+  &.playing {
+    //border-color: $pause-button-color;
+    border-style: double;
+    border-width: 0px 0px 0px ($pause-button-size/2 + 10);
+  }
+
+
+  &:hover {
+    border-color: transparent transparent transparent #404040;
+  }
+}

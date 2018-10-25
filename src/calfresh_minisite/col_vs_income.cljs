@@ -269,6 +269,8 @@
   (clear element-id)
   (draw ui-state width element-id))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Click handlers
 (defn set-click-handlers-for-attribute [ui-state element-id ui-state-item]
   (-> (.selectAll js/d3 (str element-id " a"))
       (.on "click" #(this-as t

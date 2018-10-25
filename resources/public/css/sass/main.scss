@@ -4,7 +4,9 @@
 @import "./_cost_of_living_viz";
 @import "./_cost_of_living_income";
 
+// Icons
 @import "./down_icon";
+@import "./_play_pause_icon";
 
 body {
   max-width: 100%;
@@ -263,9 +265,20 @@ body {
 .slick-arrow {
   padding: 0 !important;
   background-color: transparent !important;
+  border: none !important;
 }
 
 
 .slick-prev:before, .slick-next:before {
   color: #888 !important;
+  border: none !important;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 0rem;
+  padding-bottom: 1rem;
 }
