@@ -6,7 +6,8 @@ $pause-button-size: 16px;
 $pause-button-color: #444;
 
 .pause-button {
-  top: -30px;
+  margin-top: -2rem;
+  z-index: 999999999;
   border: 0;
   background: transparent;
   box-sizing: border-box;
