@@ -42,7 +42,7 @@
 (defn title-action [quote-map]
   (let [features (.-features (.-_data (.getSource quote-map "counties")))]
     (if (some? @selected-county-name)
-      (set-selected-county quote-map (find-matching-county-name features @selected-county-name))
+      (find-matching-county-name features @selected-county-name)
       (set-selected-county quote-map nil))
     (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                  :zoom   2}))))
