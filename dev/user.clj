@@ -1,6 +1,8 @@
 (ns user
   (:require
-   [figwheel-sidecar.repl-api :as f]))
+   [figwheel-sidecar.repl-api :as f]
+   [clojure.java.io :as io]
+   [clojure.data.json :as json]))
 
 ;; user is a namespace that the Clojure runtime looks for and
 ;; loads if its available
@@ -40,3 +42,37 @@
   "Launch a ClojureScript REPL that is connected to your build and host environment."
   []
   (f/cljs-repl))
+
+(def gcf-counties ["Alameda" "Butte" "Contra Costa" "Del Norte"
+                   "El Dorado" "Fresno" "Glenn" "Humboldt"
+                   "Marin" "Monterey" "Nevada" "Orange"
+                   "Placer" "Sacramento" "San Diego" "San Francisco"
+                   "San Luis Obispo" "San Mateo" "Santa Barbara" "Santa Clara"
+                   "Santa Cruz" "Siskiyou" "Solano" "Sonoma"
+                   "Tehama" "Tulare" "Ventura" "Yolo"])
+
+(defn feature-gcf?
+  [feature-properties]
+  (let [county-name (get-in feature-properties ["name"])]
+    (some? (some #{county-name} gcf-counties))))
+
+(defn new-properties
+  [feature-properties]
+  (assoc feature-properties "is_gcf" (feature-gcf? feature-properties)))
+
+(defn edit-california-json
+  []
+  (let [json-resource (-> "public/data/california-counties.json"
+                          io/resource
+                          slurp
+                          json/read-str)
+        features (get json-resource "features")
+        new-features (map #(assoc % "properties" (new-properties (get % "properties")))
+                          features)
+        new-json-resource (assoc json-resource "features" new-features)]
+
+    (spit
+     "resources/public/data/california-counties.json"
+     (json/write-str new-json-resource))))
+
+;;(edit-california-json)

@@ -32,7 +32,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Map Panning Actions
-(defn find-matching-county-name [features county-name]
+(defn find-county-id-from-name [features county-name]
   (let [matching (->> features
                       js->clj
                       (filter #(= county-name (get-in % ["properties" "name"])))
@@ -42,7 +42,7 @@
 (defn title-action [quote-map]
   (let [features (.-features (.-_data (.getSource quote-map "counties")))]
     (if (some? @selected-county-name)
-      (find-matching-county-name features @selected-county-name)
+      (find-county-id-from-name features @selected-county-name)
       (set-selected-county quote-map nil))
     (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                  :zoom   2}))))
@@ -98,6 +98,16 @@
     (-> quote-map-container
         (.addSource "counties", (clj->js {:type "geojson" :data resp})))
     (-> quote-map-container
+        (.addLayer (clj->js {:id "is-gcf-fill"
+                             :type "fill"
+                             :source "counties"
+                             :layout {}
+                             :paint {:fill-color "#999"
+                                     :fill-opacity ["case"
+                                                    ["boolean" ["get" "is_gcf"] false]
+                                                    1 0.2]}})))
+
+    (-> quote-map-container
         (.addLayer (clj->js {:id "california-county-fill"
                              :type "fill"
                              :source "counties"
@@ -106,6 +116,7 @@
                                      :fill-opacity ["case"
                                                     ["boolean" ["feature-state" "selected"] false]
                                                     0.6 0]}})))
+
     (set-selected-county quote-map-container
                          @selected-county-id)
 
