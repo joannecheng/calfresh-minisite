@@ -137,6 +137,10 @@
              (fn [] (.remove popup))))
 
     (-> quote-map-container
+        (.on "mouseleave" "california-counties"
+             (fn [] (.remove popup))))
+
+    (-> quote-map-container
         (.addLayer (clj->js {:id "california-counties"
                              :type "line"
                              :source "counties"
