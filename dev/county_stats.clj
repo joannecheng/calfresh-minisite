@@ -59,5 +59,4 @@ Yolo	0.5718799368	0.1475513428	0.03381795196	0.1759873618	0.6016949153	3165")
        (map read-string)
        (map #(/ (* 100.0 %) total-applicants))
        (map-indexed (fn [idx item]
-                      [(nth county-names idx) item]))
-       ))
+                      [(nth county-names idx) item]))))

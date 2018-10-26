@@ -32,10 +32,20 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Map Panning Actions
+(defn find-matching-county-name [features county-name]
+  (let [matching (->> features
+                      js->clj
+                      (filter #(= county-name (get-in % ["properties" "name"])))
+                      first)]
+    (get matching "id")))
+
 (defn title-action [quote-map]
-  (set-selected-county quote-map nil)
-  (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
-                               :zoom   2})))
+  (let [features (.-features (.-_data (.getSource quote-map "counties")))]
+    (if (some? @selected-county-name)
+      (set-selected-county quote-map (find-matching-county-name features @selected-county-name))
+      (set-selected-county quote-map nil))
+    (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
+                                 :zoom   2}))))
 
 (defn ease-to-county [quote-map county-name county-id]
   (let [center (get (get quotes/quotes county-name) :center)]
@@ -125,7 +135,10 @@
     (-> quote-map-container
         (.on "click", "california-county-fill",
              #(let [county-id (.-id (first (.-features %)))
-                    county-name (.-name (.-properties (first (.-features %))))]
+                    county-name (.-name (.-properties (first (.-features %))))
+                    top (.-offsetTop (.getElementById js/document "user_selected_county"))]
+
+                (.scrollTo js/window 0 top)
                 (reset! selected-county-name county-name)
                 (ease-to-county quote-map-container county-name county-id)
                 (update-quotes))))))
