@@ -29,5 +29,5 @@
     (formatter num)))
 
 (defn format-percent [num]
-  (let [formatter (.format js/d3 "%")]
+  (let [formatter (.format js/d3 ".2%")]
     (formatter num)))
