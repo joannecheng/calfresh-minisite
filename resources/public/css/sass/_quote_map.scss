@@ -4,13 +4,13 @@
   display: flex;
   flex-direction: row;
   z-index: 99999;
-  background-color: #1a1a1a; //rgb(31,32,32);
-  color: $color-grey-100;
+  background-color: #c9d1d2;
+  color: $color-grey-900;
   margin: 0;
   padding: 0;
 
   blockquote {
-    color: #fefefe;
+    color: $color-grey-900;
     position: relative;
     margin: 0.45em 0 1em 0.5em;
     padding: 0em 0 0 35px;
@@ -25,11 +25,11 @@
     position: absolute;
     left: -2px;
     top: -20px;
-    color: $color-grey-100;
+    color: $color-grey-900;
   }
 
   blockquote cite {
-    color: $color-grey-100;
+    color: $color-grey-900;
     font-size: 14px;
     display: block;
     margin-top: 7px;
@@ -39,8 +39,14 @@
     content: "\2014 \2009";
   }
 
+  .light-background {
+    background-color: #fff;
+    padding: 1rem;
+  }
+
   .county-info-box {
-    height: 100vh;
+    //min-height: 100vh;
+    margin-bottom: 2rem;
   }
 
   .county-data {
@@ -61,10 +67,6 @@
     position: -webkit-sticky;
     position: sticky; // JS should change this to 'fixed'
     top: 0;
-  }
-
-  .quote-map-title {
-    padding: 1rem;
   }
 
   .quote-map-section {

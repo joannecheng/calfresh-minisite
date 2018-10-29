@@ -102,10 +102,10 @@
                              :type "fill"
                              :source "counties"
                              :layout {}
-                             :paint {:fill-color "#999"
+                             :paint {:fill-color "#ccc"
                                      :fill-opacity ["case"
                                                     ["boolean" ["get" "is_gcf"] false]
-                                                    1 0.2]}})))
+                                                    0 1]}})))
 
     (-> quote-map-container
         (.addLayer (clj->js {:id "california-county-fill"
@@ -144,7 +144,7 @@
         (.addLayer (clj->js {:id "california-counties"
                              :type "line"
                              :source "counties"
-                             :paint {:line-color "#ccc"
+                             :paint {:line-color "#555"
                                      :line-width 1}})))
 
     (-> quote-map-container
@@ -164,7 +164,7 @@
 (defn draw-map []
   (js/mapboxgl.Map.
    #js {:container "quote_map"
-        :style     "mapbox://styles/mapbox/dark-v9",
+        :style     "mapbox://styles/mapbox/light-v9",
         :maxBounds (js/mapboxgl.LngLatBounds.
                     #js [-124.48200988, 31.52952194]
                     #js [-114.13077545, 43.00950241])}))
