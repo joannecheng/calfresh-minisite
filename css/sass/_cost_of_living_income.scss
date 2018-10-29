@@ -1,0 +1,91 @@
+// Cost of Living vs Income Viz
+
+@import "./_variables";
+
+#col_vs_income {
+  max-width: $content-width;
+
+  text.county-label {
+    font-size: 0.8em;
+    text-anchor: end;
+    alignment-baseline: middle;
+  }
+
+  text.number-label {
+    font-size: 0.8em;
+    text-anchor: start;
+    alignment-baseline: middle;
+  }
+
+  rect.even {
+    fill: #fff;
+  }
+  rect.odd {
+    fill: #eee;
+  }
+}
+
+/* TOOLTIPS */
+
+.grid {
+  cursor: pointer;
+}
+
+.tooltip-container {
+  .tooltip-background {
+    fill: #fefefe;
+    stroke: #777;
+    stroke-width: 0.5px;
+  }
+
+  .tooltip-text {
+    font-color: grey;
+    font-size: 0.75rem;
+  }
+
+  .tooltip-title {
+    font-weight: bold;
+  }
+}
+
+/* EXTRAS */
+line.col-line {
+  stroke: #555;
+  stroke-width: 2px;
+}
+
+line.below {
+  stroke: #d62728;
+  stroke-width: 2px;
+}
+
+line.col-marker {
+  stroke: #333;
+  stroke-weight: 0.5px;
+}
+
+line.income-marker {
+  stroke: #333;
+  stroke-weight: 0.5px;
+}
+
+.active {
+  background-color: #bababa;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 0.75em;
+
+  .control-button {
+    color: #000;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px solid rgba(127, 125, 156, .54);
+    margin-left: -1px;
+  }
+}

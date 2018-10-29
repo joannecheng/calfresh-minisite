@@ -1,0 +1,59 @@
+$light-blue: #a6cee3;
+$dark-blue: #1f78b4;
+$light-green: #b2df8a;
+$dark-green: #33a02c;
+$light-red: #fb9a99;
+$dark-red: #e31a1c;
+$outline: #444;
+//"#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"
+
+#viz1, #col_viz {
+  padding-top: 4rem;
+  rect {
+    stroke: $outline;
+    stroke-width: 0.75px;
+    outline-offset: -0.5px;
+  }
+
+  rect.housing {
+    fill: $dark-blue;
+  }
+
+  rect.medical {
+    fill: $light-blue;
+  }
+
+  rect.transportation {
+    fill: $light-green;
+  }
+
+  rect.child-care {
+    //"#1d91c0","#225ea8","#253494","#081d58"
+    fill: $dark-green;
+  }
+
+  rect.food {
+    fill: $light-red;
+  }
+
+  .limit-line {
+    stroke: #444;
+    stroke-dasharray: 2;
+  }
+}
+
+.annotation-note-label {
+  font-size: 0.85em;
+}
+
+.label {
+  font-size: 0.9rem;
+  text-align: right;
+  vertical-align: middle;
+  line-height: 0.9;
+}
+
+.legend {
+  font-size: 0.9rem;
+  text-anchor: end;
+}
