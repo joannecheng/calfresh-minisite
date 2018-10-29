@@ -69,8 +69,10 @@
         county-quotes (random-quotes (get county-data "quotes"))
         el (.getElementById js/document "quote_list")
         county-info (county-info-contents county-name county-data)]
-    (set! (.-innerHTML el) (str county-info
-                                (string/join " " (map quote-html (random-quotes county-quotes)))))))
+    (if (empty? county-quotes)
+      (set! (.-innerHTML el) "<i>There are no stories for this county yet!</i>")
+      (set! (.-innerHTML el) (str county-info
+                                  (string/join " " (map quote-html (random-quotes county-quotes))))))))
 
 (defn preload-quotes [county-names quotes]
   (let [el (.getElementById js/document "preloaded_quotes")]
