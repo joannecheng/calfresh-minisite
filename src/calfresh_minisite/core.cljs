@@ -6,6 +6,7 @@
             [calfresh-minisite.rotating-quotes :as rq]
             [calfresh-minisite.ui-state-validators :as v]
 
+            [ajax.core :refer [GET]]
             [cljsjs.ScrollMagic]))
 
 ;; UI State
@@ -17,8 +18,7 @@
          :number-children :two_children
          :number-adults :one_adult
          :show-counties :hide
-         :current-section nil
-         }))
+         :current-section nil}))
 
 ;; Scroll Handlers
 (defn side-nav-handler [element-id controller]
@@ -72,7 +72,9 @@
                                        col-vs-income)))))
 
 (defn ^:export main []
-  (quote-map/draw)
+  (GET "./data/quotes.json"
+       :response-format :json
+       :handler (partial quote-map/draw))
   (draw-index))
 
 (defn on-js-reload []

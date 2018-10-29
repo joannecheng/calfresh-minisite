@@ -1,6 +1,5 @@
 (ns calfresh-minisite.quote-view
   (:require [clojure.string :as string]
-            [calfresh-minisite.quotes :as quotes]
             [calfresh-minisite.utils :as utils]))
 
 
@@ -23,31 +22,31 @@
          (str (formatter item) "&nbsp;")
          "</td></tr>")))
 
-(defn render-info-table [county-name]
-  (let [county-data (get quotes/quotes county-name)]
-    (str "<table class=\"county-data\">"
-         (county-info-row county-data "Population" :population str)
-         (county-info-row county-data "Min Cost of Living (2 Working Adults, 2 Children)"
-                          :minimum-cost-living-family utils/format-money)
-         (county-info-row county-data "Median Income" :median-income utils/format-money)
-         (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" :poverty-rate str)
-         "</table>")))
+(defn render-info-table [county-data]
+  (str "<table class=\"county-data\">"
+       (county-info-row county-data "Population" "population" str)
+       (county-info-row county-data "Min Cost of Living (2 Working Adults, 2 Children)"
+                        "minimum-cost-living-family" utils/format-money)
+       (county-info-row county-data "Median Income" "median-income" utils/format-money)
+       (county-info-row county-data "Poverty Rate (Cost of Living Adujusted)" "poverty-rate" str)
+       "</table>"))
 
-(defn blank-county-info []
-  )
+(defn blank-county-info [])
 
-(defn county-info-contents [county-name]
+(defn county-info-contents [county-name county-data]
   (if (nil? county-name)
     (blank-county-info)
-    (render-info-table county-name)))
+    (render-info-table county-data)))
 
 (defn quote-html [county-quote]
   (str "<blockquote class=\"animated fadeInDown\">"
        county-quote
        "</blockquote>"))
 
-(defn preloaded-quotes [county-name]
-  (let [county-quotes (random-quotes (get (get quotes/quotes county-name) :quotes))]
+(defn preloaded-quotes [quotes county-name]
+  (let [county-data (get quotes county-name)
+        county-quotes (random-quotes (get county-data "quotes"))]
+
     (str "<div class=\"grid-box county-info-box\" data-county=\""
          county-name
          "\"/>"
@@ -55,7 +54,7 @@
          (title-contents county-name)
          "</div>"
          "<div class=\"light-background grid-item shift-one-third width-seven-twelfths end-row\">"
-         (county-info-contents county-name)
+         (county-info-contents county-name county-data)
          (string/join " " (map quote-html county-quotes))
          "</div></div>")))
 
@@ -65,14 +64,15 @@
   (let [el (.getElementById js/document "quote_county_name")]
     (set! (.-innerHTML el) (title-contents county-name))))
 
-(defn show-quotes [county-name]
-  (let [county-quotes (random-quotes (get (get quotes/quotes county-name) :quotes))
+(defn show-quotes [county-name quotes]
+  (let [county-data (get quotes county-name)
+        county-quotes (random-quotes (get county-data "quotes"))
         el (.getElementById js/document "quote_list")
-        county-info (county-info-contents county-name)]
-
+        county-info (county-info-contents county-name county-data)]
     (set! (.-innerHTML el) (str county-info
                                 (string/join " " (map quote-html (random-quotes county-quotes)))))))
 
-(defn preload-quotes [county-names]
+(defn preload-quotes [county-names quotes]
   (let [el (.getElementById js/document "preloaded_quotes")]
-    (set! (.-innerHTML el) (string/join "" (map preloaded-quotes county-names)))))
+    (set! (.-innerHTML el)
+          (string/join "" (map (partial preloaded-quotes quotes) county-names)))))

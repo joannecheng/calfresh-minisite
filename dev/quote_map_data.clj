@@ -3,7 +3,8 @@
             [hickory.select :as s]
             [clojure.string :as string]
             [clojure.java.io :as io]
-            [clojure.data.csv :as csv]))
+            [clojure.data.csv :as csv]
+            [clojure.data.json :as json]))
 
 ;; Get population, latitude, longitude
 ;; https://en.wikipedia.org/wiki/User:Michael_J/County_table
@@ -256,7 +257,9 @@
       first))
 
 (defn coord-str->float [coord-str]
-  (-> (subs coord-str 0 (- (count coord-str) 2))
+  (-> coord-str
+      (string/replace  #"–" "-")
+      (subs 0 (- (count coord-str) 2))
       read-string))
 
 (defn get-poverty-numbers
@@ -304,6 +307,23 @@
                            (filter #(= (nth % county-name-index) county-name)))]
     (map #(nth % quote-index) matching-rows)))
 
+(defn get-gcf-stats
+  [county-name]
+  (let [stats             (-> "county_gcf_stats.csv"
+                              io/resource
+                              slurp
+                              csv/read-csv)
+        county-name-index 0
+        matching-row      (->> stats
+                               (filter #(= (nth % county-name-index) county-name))
+                               first)]
+
+    (if (some? matching-row)
+      {:number-apps (read-string (nth matching-row 6))
+       :percent-earned-income (* 100 (read-string (nth matching-row 5)))}
+      {})
+  ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Combining data together
 (defn merge-existing-row [new-row]
@@ -320,6 +340,7 @@
         col             (get-col county-name)
         median-income   (get-median-income county-name)
         quotes          (get-quotes county-name)
+        gcf-stats       (get-gcf-stats county-name)
         existing-row    (get quotes county-name)]
 
     {county-name (merge {:population                 population
@@ -327,10 +348,16 @@
                          :quotes                     quotes
                          :median-income              median-income
                          :minimum-cost-living-family col}
-                        poverty-numbers)}))
+                        poverty-numbers
+                        gcf-stats)}))
 
 (defn all-county-data [rows]
   (apply merge (map county-data rows)))
 
 (def rows (s/select (s/tag "tr") content))
-(all-county-data (subvec rows 187 245))
+
+(spit "resources/public/data/quotes.json"
+ (-> rows
+     (subvec 187 245)
+     all-county-data
+     json/write-str))

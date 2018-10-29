@@ -6,8 +6,7 @@
             [ajax.core :refer [GET]]
 
             [calfresh-minisite.quote-view :as quote-view]
-            [calfresh-minisite.utils :as utils]
-            [calfresh-minisite.quotes :as quotes]))
+            [calfresh-minisite.utils :as utils]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; State
@@ -16,10 +15,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Quotes Event Handlers
-(defn update-quotes []
+(defn update-quotes [quotes]
   (let [county-name @selected-county-name]
     (quote-view/update-title county-name)
-    (quote-view/show-quotes county-name)))
+    (quote-view/show-quotes county-name quotes)))
 
 (defn set-selected-county [container county-id]
   (-> container
@@ -47,8 +46,8 @@
     (.easeTo quote-map (clj->js {:center [-119.4179 36.772537]
                                  :zoom   2}))))
 
-(defn ease-to-county [quote-map county-name county-id]
-  (let [center (get (get quotes/quotes county-name) :center)]
+(defn ease-to-county [quote-map county-name county-id quotes]
+  (let [center (get (get quotes county-name) "center")]
     (set-selected-county quote-map county-id)
     (.easeTo quote-map (clj->js {:center center
                                  :zoom   7}))))
@@ -61,29 +60,27 @@
        clj->js
        (js/ScrollMagic.Scene.)
        (.on "enter" (partial title-action quote-map-container))
-       ;;(.addIndicators)
        (.addTo controller)))
 
 (defn scroll-handler-for-preloaded-county
-  [quote-map-container controller county-name county-id]
-  (->  {:triggerElement (str "[data-county=\"" county-name "\"]") :duration 500}
+  [quote-map-container controller county-name county-id quotes]
+  (->  {:triggerElement (str "[data-county=\"" county-name "\"]") :duration 400}
        clj->js
        (js/ScrollMagic.Scene.)
-       (.on "enter end" (partial ease-to-county quote-map-container county-name county-id))
-       ;;(.addIndicators)
+       (.on "enter end" (partial ease-to-county quote-map-container county-name county-id quotes))
        (.addTo controller)))
 
 (defn scroll-handlers
   ;; TODO: Should zoom to county
-  [quote-map-container]
+  [quote-map-container quotes]
   (let [controller (js/ScrollMagic.Controller. #js {})]
     (scroll-handler-for-new-county quote-map-container controller)
     (scroll-handler-for-preloaded-county quote-map-container
                                             controller
-                                            "San Francisco" 38)
+                                            "San Francisco" 38 quotes)
     (scroll-handler-for-preloaded-county quote-map-container
                                          controller
-                                         "Alameda" 1)))
+                                         "Alameda" 1 quotes)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -92,7 +89,7 @@
   ;; This is complicated because of Mapbox Gl's DSL
   ;; See https://www.mapbox.com/mapbox-gl-js/example/hover-styles/ for more
   ;; information on what's going on
-  [quote-map-container resp]
+  [quote-map-container quotes resp]
   (let [popup (js/mapboxgl.Popup. #js {:closeButton false :closeOnClick false})]
 
     (-> quote-map-container
@@ -102,10 +99,10 @@
                              :type "fill"
                              :source "counties"
                              :layout {}
-                             :paint {:fill-color "#ccc"
+                             :paint {:fill-color "#3d9cd1"
                                      :fill-opacity ["case"
                                                     ["boolean" ["get" "is_gcf"] false]
-                                                    0 1]}})))
+                                                    0.4 0]}})))
 
     (-> quote-map-container
         (.addLayer (clj->js {:id "california-county-fill"
@@ -155,8 +152,8 @@
 
                 (.scrollTo js/window 0 top)
                 (reset! selected-county-name county-name)
-                (ease-to-county quote-map-container county-name county-id)
-                (update-quotes))))))
+                (ease-to-county quote-map-container county-name county-id quotes)
+                (update-quotes quotes))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -169,14 +166,14 @@
                     #js [-124.48200988, 31.52952194]
                     #js [-114.13077545, 43.00950241])}))
 
-(defn draw []
+(defn draw [quotes]
   (let [quote-map-container (draw-map)]
-    (quote-view/preload-quotes ["San Francisco" "Alameda"])
-    (update-quotes)
-    (scroll-handlers quote-map-container)
+    (quote-view/preload-quotes ["San Francisco" "Alameda"] quotes)
+    (update-quotes quotes)
+    (scroll-handlers quote-map-container quotes)
     (-> quote-map-container
         (.on "load"
              (fn []
                (GET "./data/california-counties.json"
                     :response-format :json
-                    :handler (partial draw-california quote-map-container)))))))
+                    :handler (partial draw-california quote-map-container quotes)))))))
