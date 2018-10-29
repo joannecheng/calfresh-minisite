@@ -23,3 +23,11 @@
 (defn format-money [num]
   (let [formatter (.format js/d3 "($,.0f")]
     (formatter num)))
+
+(defn format-num [num]
+  (let [formatter (.format js/d3 ",")]
+    (formatter num)))
+
+(defn format-percent [num]
+  (let [formatter (.format js/d3 "%")]
+    (formatter num)))

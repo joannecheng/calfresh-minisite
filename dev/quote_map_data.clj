@@ -320,7 +320,7 @@
 
     (if (some? matching-row)
       {:number-apps (read-string (nth matching-row 6))
-       :percent-earned-income (* 100 (read-string (nth matching-row 5)))}
+       :percent-earned-income (read-string (nth matching-row 5))}
       {})
   ))
 
