@@ -4235,7 +4235,9 @@ body.mobile-navigation-is-active {
     width: 100%;
     box-sizing: content-box; }
   #quote_map_container blockquote {
-    font-size: 1.1rem; } }
+    font-size: 1.1rem; }
+  #quote_map_container #user_selected_county {
+    display: none; } }
 #viz1, #col_viz {
   padding-top: 4rem; }
   #viz1 rect, #col_viz rect {
