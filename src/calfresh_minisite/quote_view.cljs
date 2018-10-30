@@ -18,7 +18,7 @@
   (let [item (get county-data item-name)]
     (str "<tr><td>"
          row-name
-         "</td><td>"
+         "</td><td style=\"width:40px;\">"
          (str (formatter item) "&nbsp;")
          "</td></tr>")))
 
@@ -27,6 +27,13 @@
        (county-info-row county-data "Population" "population" str)
        (county-info-row county-data "Number CalFresh Applicants" "number-apps" utils/format-num)
        (county-info-row county-data "Percentage of Applicants with Income" "percent-earned-income" utils/format-percent)
+       (county-info-row county-data "Percentage of Households with Children" "percent-with-children" utils/format-percent)
+       (county-info-row county-data "Percentage of Households with Seniors" "percent-with-seniors" utils/format-percent)
+       (county-info-row county-data "Percent with Unstable Housing" "percent-unstable-housing" utils/format-percent)
+       (county-info-row county-data "Percent Students" "percent-student" utils/format-percent)
+
+       "</table><table class=\"county-data\">"
+
        (county-info-row county-data "Min Cost of Living (2 Working Adults, 2 Children)"
                         "minimum-cost-living-family" utils/format-money)
        (county-info-row county-data "Median Income" "median-income" utils/format-money)

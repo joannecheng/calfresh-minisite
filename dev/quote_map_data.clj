@@ -216,7 +216,11 @@
 
     (if (some? matching-row)
       {:number-apps (read-string (nth matching-row 6))
-       :percent-earned-income (read-string (nth matching-row 5))}
+       :percent-earned-income (read-string (nth matching-row 5))
+       :percent-with-children (read-string (nth matching-row 4))
+       :percent-with-seniors (read-string (nth matching-row 3))
+       :percent-unstable-housing (read-string (nth matching-row 2))
+       :percent-student  (read-string (nth matching-row 1))}
       {})
   ))
 
